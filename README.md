@@ -1,6 +1,6 @@
 # Undergraduate Projects
 
-Welcome to my collection of undergraduate projects! This repository serves as a portfolio of my academic work during my undergraduate studies in BUET. Below you will find descriptions and links to each project, organized by semester and course.
+This repository serves as a portfolio of my academic work during my undergraduate studies in BUET. Below are the descriptions and links to each project, organized by semester and course.
 
 ## Table of Contents
 - [About](#about)
@@ -10,17 +10,16 @@ Welcome to my collection of undergraduate projects! This repository serves as a 
   - [Third Year](#third-year)
   - [Fourth Year](#fourth-year)
 - [Technologies](#technologies)
-- [Contact](#contact)
 
 ## About
-This repository contains all the projects I have completed during my undergraduate studies. Each project is stored in its own directory and includes the necessary documentation and code.
+This repository contains all the projects I have completed during my undergraduate studies. Each project is stored in its own directory and includes the necessary code, problem specification and other relevant resources.
 
 ## Projects
 
 ### First Year
 - **Repo 1:** [iGraphics](https://github.com/sheikhDipta003/CSE-102-BUET)
   - **Course:** January 2020 CSE102: Structured Programming Language Sessional (1-1)
-  - **Programming Language:** C
+  - **Programming Language:** C, C++
   - **Description:** Online and offline assignments, iGraphics Assignment and final project (**Pacman**)
 
 - **Repo 2:** [JavaFX](https://github.com/sheikhDipta003/CSE-108-BUET)
