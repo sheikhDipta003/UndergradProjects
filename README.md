@@ -97,12 +97,12 @@ This repository contains all the projects I have completed during my undergradua
   - **Programming Language:** C, Python, Js
   - **Description:** Cryptography offline - AES-CBC Encryption-Decryption and ECDH Key Exchange, BOF, XSS, **Autopsy Report and Demo**
 
-- **Repo 1:** [TechShoppers](https://github.com/sheikhDipta003/CSE408-BUET-Software-Development)
+- **Repo 2:** [TechShoppers](https://github.com/sheikhDipta003/CSE408-BUET-Software-Development)
   - **Course:** July 2023 CSE408: Software Development Sessional (4-1)
   - **Frameworks and Database:** React, Tailwind, Express, Postgresql
   - **Description:** Full Stack Web Development Project on Price Comparison of Tech Products - **TechShoppers**
 
-- **Repo 1:** [OpenGL](https://github.com/sheikhDipta003/CSE-410-Computer-Graphics)
+- **Repo 3:** [OpenGL](https://github.com/sheikhDipta003/CSE-410-Computer-Graphics)
   - **Course:** July 2023 CSE410: Computer Graphics Sessional (4-1)
   - **Programming Language:** C++
   - **Description:** OpenGL implementation of different phases of computer graphics pipeline - basics, rasterization, ray-casting
