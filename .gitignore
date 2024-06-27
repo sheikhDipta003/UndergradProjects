@@ -58,6 +58,12 @@ logs/
 # Operating system specific files
 Thumbs.db
 
+# Ignore all bin directories
+bin/
+
+# Ignore all obj directories
+obj/
+
 # IDEs and Text Editors
 .idea/
 .vscode/
