@@ -66,6 +66,9 @@ obj/
 
 llama-2-7b-chat.ggmlv3.q8_0.bin
 
+# Ignore all .zip files
+*.zip
+
 # IDEs and Text Editors
 .idea/
 .vscode/
