@@ -64,6 +64,8 @@ bin/
 # Ignore all obj directories
 obj/
 
+llama-2-7b-chat.ggmlv3.q8_0.bin
+
 # IDEs and Text Editors
 .idea/
 .vscode/
