@@ -15,6 +15,6 @@ void main(){
 // isEvenOrOdd(value);
 
 String? name;
-name = 'Santos';
+name = 'Dipta';
 print(name.length);
 }

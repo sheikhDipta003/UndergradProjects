@@ -27,7 +27,7 @@ void main(){
   User? user;
   user
   ?..id = 12
-  ..name = 'Santos';
+  ..name = 'Dipta';
 
   
 

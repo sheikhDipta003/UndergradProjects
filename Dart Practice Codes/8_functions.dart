@@ -74,15 +74,15 @@ void main(){
   isEvenOrOdd(3);
   isEvenOrOdd(2);
 
-  print(enterName('Santos'));
-  print(enterName('Santos', 'Enoque'));
+  print(enterName('Dipta'));
+  print(enterName('Dipta', 'Enoque'));
 
-  enterProfileDetails('Santos');
-  enterProfileDetails('Santos', 'Developer');
+  enterProfileDetails('Dipta');
+  enterProfileDetails('Dipta', 'Developer');
 
-  editProfile(newName: 'Santos', newPassword: '123abc');
+  editProfile(newName: 'Dipta', newPassword: '123abc');
 
-  userDetails('Santos', position: 'Software Engineer');
+  userDetails('Dipta', position: 'Software Engineer');
 
 }
 
