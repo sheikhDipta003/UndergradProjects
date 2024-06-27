@@ -1,0 +1,2 @@
+Run this command in a terminal to initialize your project with the cli for local development:
+npm create sanity@latest -- --quickstart sgzge89a
