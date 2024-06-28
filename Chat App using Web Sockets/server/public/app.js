@@ -1,4 +1,5 @@
-const socket = io('ws://localhost:3500')
+const port = process.env.PORT || 4000;
+const socket = io(`https://chatspace-19ij.onrender.com:${port}`)
 
 const msgInput = document.querySelector('#message')
 const nameInput = document.querySelector('#name')
