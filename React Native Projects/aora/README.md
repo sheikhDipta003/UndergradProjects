@@ -46,3 +46,6 @@ Welcome to the Aora! This mobile application allows users to browse, search, and
 - **/lib**: API service calls to [appwrite](https://appwrite.io) and other utility functions.
 - **/context**: Maintaining a global state for the logged-in user.
 
+## Resources
+- [JavaScript Mastery - YouTube Tutorial](https://youtu.be/ZBCUegTZF7M?si=h3Vx4AxrhZN2qukJ)
+
