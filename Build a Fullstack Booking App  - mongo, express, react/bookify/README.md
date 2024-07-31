@@ -39,8 +39,8 @@ This project is an Airbnb clone built using the MERN stack (MongoDB, Express, Re
 ### Steps
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/airbnb-clone.git
-   cd airbnb-clone
+   git clone https://github.com/sheikhDipta003/UndergradProjects.git
+   cd "Build a Fullstack Booking App  - mongo, express, react/bookify"
    ```
 
 2. **Backend Setup:**
