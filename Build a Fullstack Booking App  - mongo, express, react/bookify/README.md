@@ -9,6 +9,7 @@ This project is an Airbnb clone built using the MERN stack (MongoDB, Express, Re
 - [Installation](#installation)
 - [Usage](#usage)
 - [Folder Structure](#folder-structure)
+- [Resource](#resource)
 
 ## Features
 - **User Authentication:** Register and login functionality.
@@ -100,3 +101,5 @@ bookify/
     ├── public/
     └── package.json
 ```
+## Resource
+- [Coding With Dawid - YouTube Tutorial](https://youtu.be/MpQbwtSiZ7E?si=Q0cd-z7PrEChwUA1)
