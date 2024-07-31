@@ -83,7 +83,7 @@ This project is an Airbnb clone built using the MERN stack (MongoDB, Express, Re
 
 ## Folder Structure
 ```
-airbnb-clone/
+bookify/
 ├── api/
 │   ├── models/
 │   ├── uploads/
