@@ -1,6 +1,6 @@
 "use client";
-import Logo from "@/app/_components/Logo";
-import { Button } from "@/components/ui/button";
+import Logo from "../../../_components/Logo";
+import { Button } from "../../../../components/ui/button";
 import {
   collection,
   onSnapshot,
@@ -16,10 +16,11 @@ import DocumentList from "./DocumentList";
 import uuid4 from "uuid4";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { Progress } from "@/components/ui/progress";
+import { Progress } from "../../../../components/ui/progress";
 import { toast } from "sonner";
+import NotificationBox from "./NotificationBox";
 
-const MAX_FILE=process.env.NEXT_PUBLIC_MAX_FILE_COUNT;
+const MAX_FILE = process.env.NEXT_PUBLIC_MAX_FILE_COUNT;
 
 function SideNav({ params }) {
   const [documentList, setDocumentList] = useState([]);
@@ -49,9 +50,10 @@ function SideNav({ params }) {
   };
 
   const createNewDocument = async () => {
-    if(documentList?.length >= MAX_FILE){
+    if (documentList?.length >= MAX_FILE) {
       toast("Upgrade to add new file", {
-        description: "You reached max file limit, please upgrade to get unlimited file creation",
+        description:
+          "You reached max file limit, please upgrade to get unlimited file creation",
         action: {
           label: "Upgrade",
           onClick: () => console.log("Upgrade"),
@@ -74,12 +76,12 @@ function SideNav({ params }) {
     });
     //This is the default 'document' created when a new workspace is created, contains both doc and workspace related info
 
-    await setDoc(doc(db, 'documentOutput', docId.toString()), {
-      docId : docId,
-      output: []
-    })
+    await setDoc(doc(db, "documentOutput", docId.toString()), {
+      docId: docId,
+      output: [],
+    });
     //and, this firebase document contains only 'document'-specific info, that is, the content of the 'document' that the user writes to the right side in the workspace page
-    
+
     setLoading(false);
     router.replace("/workspace/" + params?.workspaceid + "/" + docId);
   };
@@ -88,7 +90,9 @@ function SideNav({ params }) {
     <article className="h-screen md:w-72 hidden md:block fixed bg-blue-50 p-5 shadow-md">
       <section className="flex justify-between items-center">
         <Logo />
-        <Bell className="h-5 w-5 text-gray-500" />
+        <NotificationBox>
+          <Bell className="h-5 w-5 text-gray-500" />
+        </NotificationBox>
       </section>
 
       <hr className="my-5" />
@@ -107,7 +111,7 @@ function SideNav({ params }) {
 
       {/* Progress Bar */}
       <section className="absolute bottom-10 w-[85%]">
-        <Progress value={(documentList?.length / MAX_FILE)*100} />
+        <Progress value={(documentList?.length / MAX_FILE) * 100} />
         <h2 className="text-sm font-light my-2">
           <strong>{documentList.length}</strong> out of <strong>5</strong> Files
           used

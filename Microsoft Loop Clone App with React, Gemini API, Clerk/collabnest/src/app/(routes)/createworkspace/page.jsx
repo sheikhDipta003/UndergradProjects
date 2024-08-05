@@ -1,8 +1,8 @@
 "use client";
-import CoverPicker from "@/app/_components/CoverPicker";
-import EmojiPickerComponent from "@/app/_components/EmojiPickerComponent";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import CoverPicker from "../../_components/CoverPicker";
+import EmojiPickerComponent from "../../_components/EmojiPickerComponent";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
 import { doc, setDoc } from "firebase/firestore";
 import { Loader2Icon, SmilePlus } from "lucide-react";
 import Image from "next/image";

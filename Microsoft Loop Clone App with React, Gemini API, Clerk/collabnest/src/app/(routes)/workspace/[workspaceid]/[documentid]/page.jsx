@@ -2,7 +2,7 @@
 import React from "react";
 import SideNav from "../../_components/SideNav";
 import DocumentEditorSection from "../../_components/DocumentEditorSection";
-import { Room } from "@/app/Room";
+import { Room } from "../../../../Room";
 
 // params.workspaceid, params.documentid : obtained via dynamic route
 function WorkspaceDocument({ params }) {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DocumentHeader from "./DocumentHeader";
 import DocumentInfo from "./DocumentInfo";
 import RichDocumentEditor from "./RichDocumentEditor";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../components/ui/button";
 import { MessageCircle, X } from "lucide-react";
 import CommentBox from "./CommentBox";
 

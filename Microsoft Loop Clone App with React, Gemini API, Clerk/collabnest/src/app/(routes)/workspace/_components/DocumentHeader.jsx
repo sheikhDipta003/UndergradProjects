@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import { Button } from '../../../../components/ui/button'
 import { OrganizationSwitcher, UserButton } from '@clerk/nextjs'
 import React from 'react'
 

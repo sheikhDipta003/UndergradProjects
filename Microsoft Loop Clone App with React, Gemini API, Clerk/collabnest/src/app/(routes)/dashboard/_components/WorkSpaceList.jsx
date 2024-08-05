@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../../components/ui/button";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { LayoutGrid, AlignLeft } from "lucide-react";
 import Image from "next/image";

@@ -17,7 +17,9 @@ export async function POST(request) {
   // Use a naming pattern to allow access to rooms with wildcards
   // Give the user, e.g., read access on their org, and write access on their group or full access to a room
   const {room} = await request.json();
-  session.allow(room, session?.FULL_ACCESS);
+  const {searchParams} = new URL(request?.url);
+  const roomId = searchParams.get('roomId');
+  session.allow(roomId, session?.FULL_ACCESS);
 
   // Authorize the user and return the result
   const { status, body } = await session.authorize();

@@ -11,6 +11,7 @@ import Checklist from "@editorjs/checklist";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../../../config/firebaseConfig";
 import { useUser } from "@clerk/nextjs";
+import GenerateAITemplate from './GenerateAITemplate';
 
 function RichDocumentEditor({ params }) {
   const editorInstance = useRef(null);
@@ -24,7 +25,7 @@ function RichDocumentEditor({ params }) {
       .save()
       .then(async (outputData) => {
         await updateDoc(doc(db, "documentOutput", params?.documentid), {
-          output: outputData,
+          output: JSON.stringify(outputData),
           editedBy: user?.primaryEmailAddress?.emailAddress,
         });
       })
@@ -43,7 +44,7 @@ function RichDocumentEditor({ params }) {
           isFetched == false
         )
           doc.data()?.editedBy &&
-            editorInstance.current?.render(doc.data()?.output);
+            editorInstance.current?.render(JSON.parse(doc.data()?.output));
         isFetched = true;
       }
     );
@@ -118,6 +119,7 @@ function RichDocumentEditor({ params }) {
   return (
     <section className="lg:-ml-60">
       <div id="editorjs"></div>
+      <div className="fixed bottom-10 md:ml-80 left-0 z-10"><GenerateAITemplate setGenerateAIOutput={(output) => editorInstance.current?.render(output)}/></div>
     </section>
   );
 }

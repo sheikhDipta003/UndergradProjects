@@ -1,9 +1,9 @@
 "use client";
-import CoverPicker from "@/app/_components/CoverPicker";
+import CoverPicker from "../../../_components/CoverPicker";
+import EmojiPickerComponent from "../../../_components/EmojiPickerComponent";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { SmilePlus } from "lucide-react";
-import EmojiPickerComponent from "@/app/_components/EmojiPickerComponent";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../../../config/firebaseConfig";
 import { toast } from "sonner";
