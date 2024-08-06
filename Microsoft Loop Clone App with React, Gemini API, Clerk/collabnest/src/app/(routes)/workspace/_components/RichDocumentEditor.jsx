@@ -11,13 +11,23 @@ import Checklist from "@editorjs/checklist";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../../../config/firebaseConfig";
 import { useUser } from "@clerk/nextjs";
-import GenerateAITemplate from './GenerateAITemplate';
+import GenerateAITemplate from "./GenerateAITemplate";
 
 function RichDocumentEditor({ params }) {
   const editorInstance = useRef(null);
   const { user } = useUser();
-  const [documentOutput, setDocumentOutput] = useState([]);
   let isFetched = false;
+
+  useEffect(() => {
+    user && initEditor();
+
+    return () => {
+      if (editorInstance.current) {
+        editorInstance.current.destroy();
+        editorInstance.current = null;
+      }
+    };
+  }, [user]);
 
   // save 'document' info in firestore, that is, whatever the user has typed in the document-editor
   const saveDocument = () => {
@@ -50,8 +60,8 @@ function RichDocumentEditor({ params }) {
     );
   };
 
-  useEffect(() => {
-    if (user && !editorInstance.current) {
+  const initEditor = () =>{
+    if (!editorInstance?.current) {
       editorInstance.current = new EditorJS({
         /**
          * id of Element that should contain the Editor
@@ -99,7 +109,7 @@ function RichDocumentEditor({ params }) {
             },
           },
         },
-        onChange: (ap, event) => {
+        onChange: (api, event) => {
           saveDocument();
         },
         onReady: () => {
@@ -107,19 +117,18 @@ function RichDocumentEditor({ params }) {
         },
       });
     }
-
-    return () => {
-      if (editorInstance.current) {
-        editorInstance.current.destroy();
-        editorInstance.current = null;
-      }
-    };
-  }, [user]);
+  };
 
   return (
     <section className="lg:-ml-60">
       <div id="editorjs"></div>
-      <div className="fixed bottom-10 md:ml-80 left-0 z-10"><GenerateAITemplate setGenerateAIOutput={(output) => editorInstance.current?.render(output)}/></div>
+      <div className="fixed bottom-10 md:ml-80 left-0 z-10">
+        <GenerateAITemplate
+          setGenerateAIOutput={(output) =>
+            editorInstance?.current.render(output)
+          }
+        />
+      </div>
     </section>
   );
 }

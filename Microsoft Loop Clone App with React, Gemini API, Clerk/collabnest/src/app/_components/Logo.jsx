@@ -1,12 +1,13 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 function Logo() {
   return (
-    <div className="flex items-center gap-2">
+    <Link href={'/dashboard'} className='flex items-center gap-2'>
       <Image src={"/logo.png"} alt="logo" width={30} height={30} />
       <h2 className="font-bold text-xl">CollabNest</h2>
-    </div>
+    </Link>
   );
 }
 

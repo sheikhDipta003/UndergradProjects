@@ -37,7 +37,7 @@ function WorkSpaceList() {
   return (
     <article className="my-10 p-10 md:px-24 lg:px-36 xl:px-52">
       <section className="flex justify-between">
-        <h2 className="font-bold text-2xl">Hello, {user?.fullName}</h2>
+        <h2 className="font-bold text-2xl">Hello, {user?.fullName ? user?.fullName : user?.primaryEmailAddress?.emailAddress}</h2>
         <Link href={"/createworkspace"}>
           <Button>+</Button>
         </Link>

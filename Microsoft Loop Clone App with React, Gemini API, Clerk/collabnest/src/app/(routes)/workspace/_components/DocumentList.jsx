@@ -4,14 +4,14 @@ import React from "react";
 import DocumentOptions from "./DocumentOptions";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../../../../config/firebaseConfig";
-import { toast } from "sonner";
 
 function DocumentList({ documentList, params }) {
   const router = useRouter();
 
   const deleteDocument = async (docId) => {
     await deleteDoc(doc(db, 'workspaceDocuments', docId));
-    toast("Document deleted!");
+    await deleteDoc(doc(db, 'documentOutput', docId));
+    router.push("/workspace/" + params?.workspaceid);
   }
 
   return (

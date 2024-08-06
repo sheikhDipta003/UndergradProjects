@@ -1,11 +1,14 @@
 import React from "react";
 import SideNav from "../_components/SideNav";
+import { Room } from "../../../Room";
 
 // params.workspaceid : obtained via dynamic route
 function Workspace({ params }) {
   return (
     <article>
-      <SideNav params={params} />
+      <Room params={params}>
+        <SideNav params={params} />
+      </Room>
     </article>
   );
 }

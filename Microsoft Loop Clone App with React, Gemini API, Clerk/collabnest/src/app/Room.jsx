@@ -11,6 +11,7 @@ export function Room({ children, params }) {
   return (
     <LiveblocksProvider
       authEndpoint={"/api/liveblocks-auth?roomId=" + params?.documentid}
+
       resolveUsers={async ({ userIds }) => {
         const q = query(collection(db, 'collabNestUsers'), where('email', 'in', userIds));
         const querySnapshot = await getDocs(q);
@@ -21,6 +22,7 @@ export function Room({ children, params }) {
         });
         return userList;
       }}
+      
       resolveMentionSuggestions={async ({ text, roomId }) => {
         const q = query(collection(db, 'collabNestUsers'), where('email', '!=', null));
         const querySnapshot = await getDocs(q);
@@ -36,7 +38,7 @@ export function Room({ children, params }) {
         return userList.map((user) => user.email);
       }}
     >
-      <RoomProvider id={params?.documentid}>
+      <RoomProvider id={params?.documentid ? params?.documentid:'1'}>
         <ClientSideSuspense fallback={<div className="flex justify-center items-center">Loading…</div>}>
           {children}
         </ClientSideSuspense>
