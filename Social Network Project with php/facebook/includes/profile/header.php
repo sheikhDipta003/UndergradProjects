@@ -2,7 +2,6 @@
 
 include 'connect/login.php';
 include 'core/load.php';
-include 'error_handler.php';
 
 if (login::isLoggedIn()) {
     $userid = login::isLoggedIn();

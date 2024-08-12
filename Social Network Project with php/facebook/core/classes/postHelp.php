@@ -73,7 +73,7 @@
                             <div class="react-inst-img align-middle">
                                 <?php
                                 foreach ($react_max_show as $react_max) {
-                                    echo ' <img class = "' + $react_max->reactType  + '-max-show" src="assets/image/react/' + $react_max->reactType  + '.png" alt="" style="height:15px; width:15px; margin-right:2px;cursor:pointer;"> ';
+                                    echo ' <img class = "' . $react_max->reactType  . '-max-show" src="assets/image/react/' . $react_max->reactType  . '.png" alt="" style="height:15px; width:15px; margin-right:2px;cursor:pointer;"> ';
                                 }
 
                                 ?>
@@ -85,6 +85,20 @@
                             if ($main_react_count->_count == '0') {
                             } else {
                                 echo $main_react_count->_count;
+                            } ?>
+                        </section>
+                    </div>
+                    <div class="comment-share-count-wrap align-middle" style="font-size:13px; color:gray;">
+                        <section class="comment-count-wrap" style="margin-right:10px;">
+                            <?php if (empty($totalCommentCount->totalComment)) {
+                            } else {
+                                echo '' . $totalCommentCount->totalComment . ' comments';
+                            } ?>
+                        </section>
+                        <section class="share-count-wrap">
+                            <?php if (empty($totalShareCount->totalShare)) {
+                            } else {
+                                echo '' . $totalShareCount->totalShare . ' Share';
                             } ?>
                         </section>
                     </div>
@@ -135,7 +149,74 @@
             </section>
 
             <section class="nf-5">
+                <div class="comment-list">
+                    <ul class="add-comment">
+                        <?php
+                        if (!empty($commentDetails)) {
+                            foreach ($commentDetails as $comment) {
+                                $com_react_max_show = $this->com_react_max_show($comment->commentOn, $comment->commentID);
+                                $com_main_react_count = $this->com_main_react_count($comment->commentOn, $comment->commentID);
+                                $commentReactCheck = $this->commentReactCheck($user_id, $comment->commentOn, $comment->commentID);
+                                $timeAgo = $this->timeAgo($comment->commentAt);
+                        ?>
+                                <li class="new-comment">
+                                    <article class="com-details">
+                                        <section class="com-pro-pic">
+                                            <a href="#">
+                                                <span class="top-pic"><img src="<?php echo $comment->profilePic; ?>" alt=""></span>
+                                            </a>
+                                        </section>
+                                        <section class="com-pro-wrap">
+                                            <div class="com-text-react-wrap">
+                                                <?php require 'core/classes/commentOnPostHelp.php'; ?>
+                                            </div>
 
+                                            <div class="reply-wrap">
+                                                <section class="reply-text-wrap">
+                                                    <ul class="old-reply">
+                                                        <?php
+                                                        $replyDetails = $this->replyFetch($comment->commentOn, $comment->commentID);
+
+                                                        foreach ($replyDetails as $reply) {
+                                                            $reply_react_count = $this->reply_main_react_count($reply->commentOn, $reply->commentID, $reply->commentReplyID);
+                                                            $reply_react_max_show = $this->reply_react_max_show($reply->commentOn, $reply->commentID, $reply->commentReplyID);
+                                                            $replyReactCheck = $this->replyReactCheck($user_id, $reply->commentOn, $reply->commentID, $reply->commentReplyID);
+                                                            $timeAgoForCom = $this->timeAgoForCom($reply->commentAt);
+                                                        ?>
+                                                        <?php
+                                                            require "C:\\xampp\\htdocs\\facebook\\core\\classes\\replyOnPostHelp.php";
+                                                        }
+
+                                                        ?>
+                                                    </ul>
+                                                </section>
+
+                                                <section class="replyInput">
+
+                                                </section>
+                                            </div>
+                                        </section>
+                                    </article>
+                                </li>
+                        <?php
+
+                            }
+                        }
+                        ?>
+                    </ul>
+                </div>
+                <div class="comment-write">
+                    <div class="com-pro-pic" style="margin-top:4px;">
+                        <a href="#">
+                            <span class="top-pic"><img src="<?php echo $userdata->profilePic; ?>" alt=""></span>
+                        </a>
+                    </div>
+                    <div class="com-input">
+                        <div class="comment-input" style="flex-basis:90%;">
+                            <input type="text" name="" id="" class="comment-input-style comment-submit" placeholder="Write a comment..." data-postid="<?php echo $post->post_id; ?>" data-userid="<?php echo $user_id; ?>">
+                        </div>
+                    </div>
+                </div>
             </section>
         </div>
 

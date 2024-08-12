@@ -10,9 +10,9 @@
 </head>
 
 <body>
-    <div class="u_p_id" data-uid="<?php echo $userid ?>" data-pid="<?php echo $profileId ?>"></div>
-
     <?php require './includes/profile/header.php' ?>
+
+    <div class="u_p_id" data-uid="<?php echo $userid ?>" data-pid="<?php echo $profileId ?>"></div>
 
     <main>
         <article class="main-area">

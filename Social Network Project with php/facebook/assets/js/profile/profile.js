@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() {    
     // Function to dynamically load a JavaScript file
     function loadScript(url, callback) {
         var script = document.createElement('script');
@@ -305,6 +305,14 @@ $(document).ready(function() {
 
     loadScript('assets/js/profile/mainReact.js', function() {
         console.log('mainReact.js loaded successfully');
+    });
+
+    loadScript('assets/js/profile/comment.js', function() {
+        console.log('comment.js loaded successfully');
+    });
+
+    loadScript('assets/js/profile/reply.js', function() {
+        console.log('reply.js loaded successfully');
     });
 
 });

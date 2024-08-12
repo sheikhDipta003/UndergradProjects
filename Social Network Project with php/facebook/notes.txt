@@ -13,7 +13,7 @@ MySQL will use a default storage engine if one is not explicitly specified in th
 ===========================
 
 
-"CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL":
+"CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci":
 
 CHARACTER SET utf8mb4:
 
@@ -26,5 +26,27 @@ utf8mb4_unicode_520_ci is a collation for the utf8mb4 character set. The collati
 Using a Unicode collation ensures that text comparison is consistent with Unicode standards, which is important for correctly sorting and comparing international text.
 
 Why These Might Be Necessary:
-Internationalization: Using utf8mb4 and a Unicode collation like utf8mb4_unicode_520_ci is crucial for applications that handle a wide range of international text, including languages with complex characters and symbols. It ensures that the database can store and correctly sort and compare text from any language.
+Using utf8mb4 and a Unicode collation like utf8mb4_unicode_520_ci is crucial for applications that handle a wide range of international text, including languages with complex characters and symbols and emojis. It ensures that the database can store and correctly sort and compare text from any language or texts containing emojis.
 ===========================
+
+
+Table name: react
+reactID - id of this react-record
+reactBy - the user_id of the user who made this react
+reactOn - the post_id which this react is made on
+reactCommentOn - the commentID this react is made on (0 if this react is not made on any comment)
+reactReplyOn - the replyID of some comment this react is made on (0 if this react is not made on a reply of some comment)
+reactType - type of react - haha, angry, love etc
+reactTimeOn - the datetime this react was made at
+
+Table name: comments
+commentID - id of the comment
+comment_parent_id - post_id for which this comment is made
+commentOn - post_id for which this comment is made
+commentReplyID - 0 only for the top-level comments (i.e., comments that are not replies to other comments), otherwise the commentID of the comment for which 'this' comment is a reply
+replyID - if this is a reply of a parent comment, then this id indicates a particular reply among the many replies of the parent comment
+comment - text of this comment (may contain emojis as well)
+commentBy - user_id of the user who made this comment
+commentAt - datetime this comment was made at
+
+
