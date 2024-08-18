@@ -1,7 +1,7 @@
 $(document).ready(function () {
   var u_id = $(".u_p_id").data("uid");
   var p_id = $(".u_p_id").data("pid");
-  var BASE_URL = "http://localhost/facebook/";
+  const BASE_URL = "http://localhost/facebook/";
 
   $(document).on("click", ".like-action", function () {
     var likeActionIcon = $(this).find(".like-action-icon img");

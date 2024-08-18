@@ -20,8 +20,8 @@
     <main>
         <article class="main-area">
             <?php
-            if (!empty($blockUser)) { ?>
-
+            if (!empty($blockUser)) {
+            ?>
             <?php require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\blockUser.php";
             } else { ?>
 
@@ -76,22 +76,55 @@
 
                     <?php require 'includes/profile/cover-button.php'; ?>
 
-                    <section class="bio-timeline">
-                        <section class="bio-wrap">
-                            <?php require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\bio.php"; ?>
-                        </section>
-
-                        <section class="status-timeline-wrap">
-                            <?php if ($profileId == $userid) { ?>
-
-                                <?php require 'includes/profile/status.php'; ?>
-
-                            <?php } ?>
-
-                            <div class="ptaf-wrap">
-                                <?php $loadFromPost->posts($userid, $profileId, 20); ?>
+                    <section>
+                        <div class="about-wrap">
+                            <div class="about-header">
+                                <section class="about-icon"><img src="assets/image/profile/about.JPG" alt=""></section>
+                                <section class="about-text">About
                             </div>
-                        </section>
+                            <section class="hideAboutFieldRestore" style="display:none;"
+                                data-userid="<?php echo $userid; ?>"
+                                data-profileid="<?php echo $profileId; ?>">
+                            </section>
+                            <section class="hideAboutFieldRestoreHeading" style="display:none;"
+                                data-userid="<?php echo $userid; ?>"
+                                data-profileid="<?php echo $profileId; ?>">
+                            </section>
+                        </div>
+                        <div class="about-main">
+                            <section class="about-menu">
+                                <ul>
+                                    <?php
+                                    $menuItems = [
+                                        'overview' => 'Overview',
+                                        'work-education' => 'Work and Education',
+                                        'places-lived' => 'Places You\'ve Lived',
+                                        'contact-basic' => 'Contact and Basic Info',
+                                        'family-relation' => 'Family and Relationship',
+                                        'details-you' => 'Details About You',
+                                        'life-events' => 'Life Events'
+                                    ];
+
+                                    foreach ($menuItems as $class => $label) {
+                                    ?>
+                                        <li class="<?php echo $class; ?>"
+                                            data-userid="<?php echo $userid; ?>"
+                                            data-profileid="<?php echo $profileId; ?>">
+                                            <span class="activeAbout"
+                                                data-userid="<?php echo $userid; ?>"
+                                                data-profileid="<?php echo $profileId; ?>">
+                                                <?php echo $label; ?>
+                                            </span>
+                                        </li>
+                                    <?php } ?>
+                                </ul>
+                            </section>
+
+                            <section class="about-menu-details">
+                                <?php require "C:\\xampp\\htdocs\\facebook\\includes\\about\\overview.php"; ?>
+                            </section>
+                        </div>
+                        </div>
                     </section>
                 </section>
 
@@ -110,6 +143,7 @@
     <script src="assets/js/jquery.js " defer></script>
     <script src="assets/dist/emojionearea.min.js" defer></script>
     <script src="assets/js/profile/profile.js " defer></script>
+    <script src="assets/js/about/about.js" defer></script>
 </body>
 
 </html>

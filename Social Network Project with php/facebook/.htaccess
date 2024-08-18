@@ -1,0 +1,13 @@
+# Enable the rewrite engine, which allows URL rewriting
+RewriteEngine On
+
+# Condition: if the requested file does not exist
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Condition: if the requested directory does not exist
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rule: match a URL of the form `something/` or `something` where `something` is alphanumeric, hyphens, or underscores.
+# profile.php?username=$1: Rewrite the URL to `profile.php?username=something`.
+# [QSA]: appends any query string from the original URL to the new one.
+RewriteRule ^([a-zA-Z0-9_-]+)/?$ profile.php?username=$1 [QSA]

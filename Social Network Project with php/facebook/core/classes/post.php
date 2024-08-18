@@ -30,6 +30,11 @@ class Post extends User
             $main_react_count = $this->main_react_count($post->post_id);
             $commentDetails = $this->commentFetch($post->post_id);
             $totalCommentCount = $this->totalCommentCount($post->post_id);
+            $totalShareCount = $this->totalShareCount($post->post_id);
+            if (empty($post->shareId)) {
+            } else {
+                $shareDetails = $this->shareFetch($post->shareId, $post->postBy);
+            }
 
             require 'core/classes/postHelp.php';
         }
@@ -216,5 +221,128 @@ class Post extends User
         $stmt->bindParam(":user_id", $userid, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    //fetch the total number of times this post has been shared
+    public function totalShareCount($postid)
+    {
+        $stmt = $this->pdo->prepare("SELECT count(*) as totalShare FROM post WHERE post.shareId = :post_id");
+
+        $stmt->bindParam(":post_id", $postid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //fetch the user, profile and post info (including sharedFrom, sharedText, shareCount) for this post made by this profile owner
+    public function shareFetch($postid, $profileId)
+    {
+        $stmt = $this->pdo->prepare("SELECT users.*, post.*, profile.* FROM users, post, profile WHERE users.user_id = :user_id AND post.post_id = :post_id AND profile.userId = :user_id");
+
+        $stmt->bindParam(":post_id", $postid, PDO::PARAM_INT);
+        $stmt->bindParam(":user_id", $profileId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    //update/edit the shareText of this post by this user
+    public function sharedPostUpd($userid, $postid, $editText)
+    {
+        $stmt = $this->pdo->prepare("UPDATE post SET shareText = :editText WHERE post_id =:post_id AND userId = :user_id");
+
+        $stmt->bindParam(":post_id", $postid, PDO::PARAM_INT);
+        $stmt->bindParam(":user_id", $userid, PDO::PARAM_INT);
+        $stmt->bindParam(":editText", $editText, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+
+    //searches for users whose user->userLink start with the given search term, and it fetches the related user and profile information from the database.
+    public function searchText($search)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users LEFT JOIN profile ON users.user_id = profile.userId WHERE users.userLink LIKE ? ");
+        //WHERE users.userLink LIKE ?: This filters the results to only include users whose userLink column value starts with the search term (provided as a parameter). The LIKE operator is used for pattern matching.
+
+        $stmt->bindValue(1, $search . '%', PDO::PARAM_STR);
+        //$search.'%': The search term is appended with a % symbol, which is a wildcard character in SQL. This means the query will match any userLink that starts with the provided search term.
+        //bindValue(1, $search.'%', PDO::PARAM_STR): This binds the value of the search term to the first placeholder (?) in the query.
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function searchMsgUser($msgUser, $userid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users LEFT JOIN profile ON users.user_id = profile.userId WHERE users.user_id != ? AND users.userLink LIKE ? ");
+        $stmt->bindValue(1, $userid, PDO::PARAM_INT);
+        $stmt->bindValue(2,  $msgUser . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    //fetch the details of this request (which includes reqStatus and requestOn) made by the logged-in user to this profile owner
+    public function requestCheck($userid, $profileId)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM request WHERE reqtReceiver = :profileid and reqtSender = :userid ");
+
+        $stmt->bindParam(":profileid", $profileId, PDO::PARAM_INT);
+        $stmt->bindParam(":userid", $userid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //fetch the details of this request (which includes reqStatus and requestOn) made by this profile owner to the logged-in user
+    public function requestConf($profileid, $userid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM request WHERE reqtReceiver = :userid AND reqtSender =:profileid");
+
+        $stmt->bindParam(":profileid", $profileid, PDO::PARAM_INT);
+        $stmt->bindParam(":userid", $userid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //update reqStatus for the request made by this profile owner to the logged-in user
+    public function updateConfirmReq($profileid, $userid)
+    {
+        $stmt = $this->pdo->prepare("UPDATE request SET reqStatus = 1 WHERE reqtReceiver = :userid AND reqtSender = :profileid");
+        $stmt->bindParam(":profileid", $profileid, PDO::PARAM_INT);
+        $stmt->bindParam(":userid", $userid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //fetch the entry from the 'follow' table where the logged-in user followed the profile-owner or the other way
+    public function followCheck($profileId, $userid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM follow WHERE (sender = :profileid AND receiver =:userid) OR (sender = :userid AND receiver = :profileid)");
+
+        $stmt->bindParam(":profileid", $profileId, PDO::PARAM_INT);
+        $stmt->bindParam(":userid", $userid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //$aboutData -> particular column names in the profile table - 'workspace','highschool','address','relationship'
+    //$heading -> the label to be shown describing this $aboutData
+    public function aboutOverview($aboutData, $userid, $profileid, $heading)
+    {
+        $userdata = $this->userdata($profileid);
+
+        echo ($userid != $profileid)
+            ? '<span class="about-success">' . $userdata->$aboutData . '</span><br>'
+            : (($userdata->$aboutData == '')
+                ? '<div class="add-' . $aboutData . ' align-middle" 
+                    data-userid="' . $userid . '" 
+                    data-profileid="' . $profileid . '" 
+                    style="margin: 0 0 20px 0;">
+                    <div class="plus-square">+</div>
+                    <div class="' . $aboutData . '" style="font-size:15px;">' . $heading . '</div>
+                </div>'
+                : '<div class="add-' . $aboutData . ' align-middle" 
+                    data-userid="' . $userid . '" 
+                    data-profileid="' . $profileid . '" 
+                    style="margin: 0 0 20px 0;">
+                    <span class="about-success">' . $userdata->$aboutData . '</span>
+                </div><br>'
+            );
     }
 }

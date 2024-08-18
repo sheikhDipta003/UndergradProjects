@@ -1,6 +1,6 @@
 $(document).ready(function () {
   var p_id = $(".u_p_id").data("pid");
-  var BASE_URL = "http://localhost/facebook/";
+  const BASE_URL = "http://localhost/facebook/";
 
   //console.log(BASE_URL + ", " + u_id + ", " + p_id);
   $(document).on("click", ".com-reply-action", function () {

@@ -28,14 +28,14 @@
                 <div class="nf-1-right">
                     <div class="nf-1-right-dott">
                         <?php
-                        if (empty($post->shareId)) {
+                        if (empty($post->shareId)) {  //this is NOT a shared post
                             if ($user_id == $profileId) { ?>
                                 <div class="post-option" data-postid="<?php echo $post->post_id; ?>" data-userid="<?php echo $user_id ?>">...</div>
                                 <div class="post-option-details-container"></div>
                             <?php
                             } else {
                             }
-                        } else {
+                        } else {  //this IS a shared post
                             if ($user_id == $profileId) { ?>
                                 <div class="shared-post-option" data-postid="<?php echo $post->post_id; ?>" data-userid="<?php echo $user_id ?>">...</div>
                                 <div class="shared-post-option-details-container"></div>
@@ -51,8 +51,66 @@
             <section class="nf-2">
                 <div class="nf-2-text" data-postid="<?php echo $post->post_id; ?>" data-userid="<?php echo $user_id ?>" data-profilePic="<?php echo $post->profilePic; ?>">
                     <?php
-                    $postText = $post->post;
-                    echo $postText;
+                    if (empty($post->shareId)) {  //this is NOT a shared post
+                        echo $post->post;
+                    } else {   //this IS a shared post
+                        if (empty($shareDetails)) {
+                            echo 'Share details not found.';
+                        } else {
+                            echo '<span class="nf-2-text-span" data-postid = "' . $post->post_id . '" data-userid="' . $user_id . '" data-profilepic="' . $post->profilePic . '">' . $post->shareText . '</span>';
+                        }
+
+                        foreach ($shareDetails as $share) { ?>
+                            <div class="share-container"
+                                style="padding:5px; box-shadow: 0 0 3px gray; margin-top:10px; display:flex; flex-direction:column; align-items:flex-start; cursor:pointer"
+                                data-userlink="<?php echo $share->userLink; ?>">
+
+                                <section class="nf-1">
+                                    <section class="nf-1-left">
+                                        <div class="nf-pro-pic">
+                                            <a href="<?php echo BASE_URL . $share->userLink; ?>"></a>
+                                            <img src="<?php echo BASE_URL . $share->profilePic; ?>" class="pro-pic" alt="">
+                                        </div>
+                                        <div class="nf-pro-name-time">
+                                            <div class="nf-pro-name">
+                                                <a href="<?php echo BASE_URL . $share->userLink; ?>" class="nf-pro-name">
+                                                    <?php echo '' . $share->firstName . ' ' . $share->lastName . ''; ?>
+                                                </a>
+                                            </div>
+                                            <div class="nf-pro-time-privacy">
+                                                <div class="nf-pro-time">
+                                                    <?php echo $this->timeAgo($share->postedOn); ?>
+                                                </div>
+                                                <div class="nf-pro-privacy">
+                                                    <img src="../../facebook/assets/image/privacy.JPG" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="nf-1-right"></section>
+                                </section>
+                                <section class="nf-2">
+                                    <div class="nf-2-text"
+                                        data-postid="<?php echo $share->post_id; ?>"
+                                        data-userid="<?php echo $user_id ?>"
+                                        data-profilePic="<?php echo $share->profilePic; ?>">
+                                        <?php echo $share->post;  ?>
+                                    </div>
+                                    <div class="nf-2-img"
+                                        data-postid="<?php echo $share->post_id; ?>"
+                                        data-userid="<?php echo $user_id ?>">
+                                        <?php $shareImgJson = json_decode($share->postImage);
+                                        for ($i = 0; $i < count((array)$shareImgJson); $i++) {
+                                            echo '  <div class="post-img-box" data-postImgID="' . $share->id . '" style="max-height: 400px; overflow: hidden;"><img src="' . BASE_URL . $shareImgJson['' . $i++ . '']->imageName . '" class="postImage" alt="" style="width: 100%;cursor:pointer;"></div>';
+                                        }
+                                        ?>
+                                    </div>
+                                </section>
+
+                            </div>
+                    <?php
+                        }
+                    }
                     ?>
                 </div>
 
@@ -106,7 +164,10 @@
             </section>
 
             <section class="nf-4">
-                <div class="like-action-wrap" data-postid="<?php echo $post->post_id; ?>" data-userid="<?php echo $user_id; ?>" style="position:relative;">
+                <div class="like-action-wrap"
+                    data-postid="<?php echo $post->post_id; ?>"
+                    data-userid="<?php echo $user_id; ?>"
+                    style="position:relative;">
                     <div class="react-bundle-wrap"></div>
 
                     <div class="like-action ra">
@@ -140,7 +201,11 @@
                     </div>
                 </div>
 
-                <div class="share-action ra" data-postid="<?php echo $post->post_id; ?>" data-userid="<?php echo $user_id ?>" data-profileid="<?php echo $profileId; ?>" data-profilePic="<?php echo $post->profilePic; ?>">
+                <div class="share-action ra"
+                    data-postid="<?php echo $post->post_id; ?>"
+                    data-userid="<?php echo $user_id ?>"
+                    data-profileid="<?php echo $profileId; ?>"
+                    data-profilePic="<?php echo $post->profilePic; ?>">
                     <div class="share-action-icon">
                         <img src="assets/image/shareAction.JPG" alt="">
                     </div>
@@ -213,7 +278,11 @@
                     </div>
                     <div class="com-input">
                         <div class="comment-input" style="flex-basis:90%;">
-                            <input type="text" name="" id="" class="comment-input-style comment-submit" placeholder="Write a comment..." data-postid="<?php echo $post->post_id; ?>" data-userid="<?php echo $user_id; ?>">
+                            <input type="text" name="" id=""
+                                class="comment-input-style comment-submit"
+                                placeholder="Write a comment..."
+                                data-postid="<?php echo $post->post_id; ?>"
+                                data-userid="<?php echo $user_id; ?>">
                         </div>
                     </div>
                 </div>

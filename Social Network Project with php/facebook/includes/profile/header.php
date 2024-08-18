@@ -17,16 +17,16 @@ if (isset($_GET['username']) == true && empty($_GET['username']) === false) {
 }
 $profileData = $loadFromUser->userData($profileId);
 $userData = $loadFromUser->userData($userid);
-$requestCheck = null;
-$requestConf = null;
-$followCheck = null;
+// $requestCheck = null;
+// $requestConf = null;
+// $followCheck = null;
 $notification = null;
 $notificationCount = [];
 $requestNotificationCount = null;
 $messageNotification = [];
-// $requestCheck = $loadFromPost->requestCheck($userid, $profileId);
-// $requestConf = $loadFromPost->requestConf($profileId, $userid);
-// $followCheck = $loadFromPost->followCheck($profileId, $userid);
+$requestCheck = $loadFromPost->requestCheck($userid, $profileId);
+$requestConf = $loadFromPost->requestConf($profileId, $userid);
+$followCheck = $loadFromPost->followCheck($profileId, $userid);
 
 // $notification = $loadFromPost->notification($userid);
 // $notificationCount = $loadFromPost->notificationCount($userid);
@@ -38,7 +38,7 @@ $messageNotification = [];
     <article class="top-bar">
         <section class="top-left-part">
             <figure class="profile-logo"><img src="assets/image/logo.jpg" alt=""></figure>
-            <div class="search-wrap" style="display: inline;z-index:1;">
+            <div class="search-wrap" style="display: inline; z-index:1;">
                 <div class="search-input" style="display:flex;justify-content:center;align-items:center;width:100%;">
                     <input type="text" name="main-search" id="main-search">
                     <figure class="s-icon top-icon top-css">
