@@ -1,10 +1,14 @@
+<?php require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\load.php"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tony Stark</title>
+    <title>
+        <?php echo '' . $profileData->firstName . ' ' . $profileData->lastName . ''; ?>
+    </title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/dist/emojionearea.min.css">
 </head>
@@ -68,7 +72,14 @@
                             </article>
 
                             <article class="profile-action">
-                                <?php require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\requestCheckConfirm.php"; ?>
+                                <?php if ($userid == $profileId) { ?>
+                                    <a href="about.php">
+                                        <?php require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\editProfile.php"; ?>
+                                    </a>
+                                <?php } else {
+                                    require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\requestCheckConfirm.php";
+                                    require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\followCheck.php";
+                                } ?>
                             </article>
                         </div>
 

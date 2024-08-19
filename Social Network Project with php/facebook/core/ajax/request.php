@@ -16,7 +16,7 @@ if (isset($_POST['confirmRequest'])) {
     $profileid = $_POST['confirmRequest'];
     $userid = $_POST['userid'];
 
-    $loadFromPost->updateConfirmReq($profileid, $userid);
+    $loadFromUser->updateConfirmReq($profileid, $userid);
     echo 'confirmRequest';
 }
 

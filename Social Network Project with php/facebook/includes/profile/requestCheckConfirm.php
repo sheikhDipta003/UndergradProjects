@@ -1,10 +1,4 @@
 <?php
-if ($userid == $profileId) { ?>
-    <a href="about.php">
-        <?php require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\editProfile.php"; ?>
-    </a>
-
-    <?php } else {
     if (empty($requestCheck)) {
         if (empty($requestConf)) {  ?>
 
@@ -57,6 +51,7 @@ if ($userid == $profileId) { ?>
         <?php
 
         } else {
+            echo 'Request confirmation status not found';
         }
     } else if ($requestCheck->reqStatus == '0') { ?>
 
@@ -85,10 +80,7 @@ if ($userid == $profileId) { ?>
 
 <?php
     } else {
-        echo 'Not found';
+        echo 'Request check status not found';
     }
-
-    require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\followCheck.php";
-}
 
 ?>

@@ -178,4 +178,133 @@ class User
             $stmt->execute();
         }
     }
+
+    //searches for users whose user->userLink start with the given search term, and it fetches the related user and profile information from the database.
+    public function searchText($search)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users LEFT JOIN profile ON users.user_id = profile.userId WHERE users.userLink LIKE ? ");
+        //WHERE users.userLink LIKE ?: This filters the results to only include users whose userLink column value starts with the search term (provided as a parameter). The LIKE operator is used for pattern matching.
+
+        $stmt->bindValue(1, $search . '%', PDO::PARAM_STR);
+        //$search.'%': The search term is appended with a % symbol, which is a wildcard character in SQL. This means the query will match any userLink that starts with the provided search term.
+        //bindValue(1, $search.'%', PDO::PARAM_STR): This binds the value of the search term to the first placeholder (?) in the query.
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function searchMsgUser($msgUser, $userid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users LEFT JOIN profile ON users.user_id = profile.userId WHERE users.user_id != ? AND users.userLink LIKE ? ");
+        $stmt->bindValue(1, $userid, PDO::PARAM_INT);
+        $stmt->bindValue(2,  $msgUser . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    //fetch the details of this request (which includes reqStatus and requestOn) made by the logged-in user to this profile owner
+    public function requestCheck($userid, $profileId)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM request WHERE reqtReceiver = :profileid and reqtSender = :userid ");
+
+        $stmt->bindParam(":profileid", $profileId, PDO::PARAM_INT);
+        $stmt->bindParam(":userid", $userid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //fetch the details of this request (which includes reqStatus and requestOn) made by this profile owner to the logged-in user
+    public function requestConf($profileid, $userid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM request WHERE reqtReceiver = :userid AND reqtSender =:profileid");
+
+        $stmt->bindParam(":profileid", $profileid, PDO::PARAM_INT);
+        $stmt->bindParam(":userid", $userid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //update reqStatus for the request made by this profile owner to the logged-in user
+    public function updateConfirmReq($profileid, $userid)
+    {
+        $stmt = $this->pdo->prepare("UPDATE request SET reqStatus = 1 WHERE reqtReceiver = :userid AND reqtSender = :profileid");
+        $stmt->bindParam(":profileid", $profileid, PDO::PARAM_INT);
+        $stmt->bindParam(":userid", $userid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //fetch the entry from the 'follow' table where the logged-in user followed the profile-owner or the other way
+    public function followCheck($profileId, $userid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM follow WHERE (sender = :profileid AND receiver =:userid) OR (sender = :userid AND receiver = :profileid)");
+
+        $stmt->bindParam(":profileid", $profileId, PDO::PARAM_INT);
+        $stmt->bindParam(":userid", $userid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //$aboutData -> particular column names in the profile table - 'workspace','highschool','address','relationship'
+    //$heading -> the label to be shown describing this $aboutData
+    public function aboutOverview($aboutData, $userid, $profileid, $heading)
+    {
+        $userdata = $this->userdata($profileid);
+
+        echo ($userid != $profileid)
+            ? '<span class="about-success">' . $userdata->$aboutData . '</span><br>'
+            : (($userdata->$aboutData == '')
+                ? '<div class="add-' . $aboutData . ' align-middle" 
+                    data-userid="' . $userid . '" 
+                    data-profileid="' . $profileid . '" 
+                    style="margin: 0 0 20px 0;">
+                    <div class="plus-square">+</div>
+                    <div class="' . $aboutData . '" style="font-size:15px;">' . $heading . '</div>
+                </div>'
+                : '<div class="add-' . $aboutData . ' align-middle" 
+                    data-userid="' . $userid . '" 
+                    data-profileid="' . $profileid . '" 
+                    style="margin: 0 0 20px 0;">
+                    <span class="about-success">' . $userdata->$aboutData . '</span>
+                </div><br>'
+            );
+    }
+
+    //fetch the total number of friend requests that this profile owner has received but hasn't confirmed yet
+    public function requestData($profileId)
+    {
+        $stmt = $this->pdo->prepare("SELECT count(*) as reqCount FROM request WHERE reqStatus = 0 AND reqtReceiver = :profileid");
+        $stmt->bindValue(':profileid', $profileId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //retrieves all requests where this profile owner is either the sender or the receiver, and the status of the request is '1', that is, 'confirmed'
+    public function friendsdata($profileid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM request LEFT JOIN profile ON profile.userId = request.reqtReceiver LEFT JOIN users ON users.user_id = request.reqtReceiver WHERE request.reqtSender = :profileid AND request.reqStatus = '1' UNION
+        SELECT * FROM request LEFT JOIN profile ON profile.userId = request.reqtSender LEFT JOIN users ON users.user_id = request.reqtSender WHERE request.reqtReceiver = :profileid AND request.reqStatus = '1'
+        ");
+        $stmt->bindParam(":profileid", $profileid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    //fetch all the info from the 'users','follow','profile' tables about the followers of this profile owner
+    public function followersdata($profileid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM follow LEFT JOIN profile ON profile.userId = follow.sender LEFT JOIN users ON users.user_id = follow.sender WHERE follow.receiver = :profileid");
+        $stmt->bindParam(":profileid", $profileid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    //fetch the full image paths (indicating their file location in local machine) of all the photos posted by the profile owner
+    public function yourPhoto($profileId)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM post WHERE postImage != '' and postBy = :profileid");
+        $stmt->bindParam(":profileid", $profileId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 }

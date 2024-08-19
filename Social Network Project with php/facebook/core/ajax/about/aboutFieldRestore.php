@@ -10,7 +10,7 @@ if(isset($_POST['addDataType'])){
     $user_id = $_POST['userid'];
     $profileid = $_POST['profileid'];
 
-    $loadFromPost->aboutOverview($addData, $user_id, $profileid, $dataHeading);
+    $loadFromUser->aboutOverview($addData, $user_id, $profileid, $dataHeading);
 }
 
 ?>

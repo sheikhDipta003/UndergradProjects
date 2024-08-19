@@ -32,14 +32,14 @@ function renderSearchResult($searchResults, $user_id, $isMsgUser = false)
 
 if (isset($_POST['searchText'])) {
     $searchText = $_POST['searchText'];
-    $searchResult = $loadFromPost->searchText($searchText, $user_id);
+    $searchResult = $loadFromUser->searchText($searchText, $user_id);
     renderSearchResult($searchResult, $user_id);
 }
 
 if (isset($_POST['msgUser'])) {
     $msgUser = $_POST['msgUser'];
     $userid = $_POST['userid'];
-    $searchResult = $loadFromPost->searchMsgUser($msgUser, $userid);
+    $searchResult = $loadFromUser->searchMsgUser($msgUser, $userid);
     renderSearchResult($searchResult, $userid, true);
 }
 

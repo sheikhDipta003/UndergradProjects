@@ -24,8 +24,8 @@
     <main>
         <article class="main-area">
             <?php
-            if (!empty($blockUser)) {
-            ?>
+            if (!empty($blockUser)) { ?>
+
             <?php require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\blockUser.php";
             } else { ?>
 
@@ -87,52 +87,37 @@
 
                     <?php require 'includes/profile/cover-button.php'; ?>
 
-                    <section>
+                    <section class="bio-timeline">
                         <div class="about-wrap">
-                            <div class="about-header">
-                                <section class="about-icon"><img src="assets/image/profile/about.JPG" alt=""></section>
-                                <section class="about-text">About</section>
-                                <section class="hideAboutFieldRestore" style="display:none;"
-                                    data-userid="<?php echo $userid; ?>"
-                                    data-profileid="<?php echo $profileId; ?>">
-                                </section>
-                                <section class="hideAboutFieldRestoreHeading" style="display:none;"
-                                    data-userid="<?php echo $userid; ?>"
-                                    data-profileid="<?php echo $profileId; ?>">
-                                </section>
-                            </div>
-                            <div class="about-main">
-                                <section class="about-menu">
-                                    <ul>
-                                        <?php
-                                        $menuItems = [
-                                            'overview' => 'Overview',
-                                            'work-education' => 'Work and Education',
-                                            'places-lived' => 'Places You\'ve Lived',
-                                            'contact-basic' => 'Contact and Basic Info',
-                                            'family-relation' => 'Family and Relationship',
-                                            'details-you' => 'Details About You',
-                                            'life-events' => 'Life Events'
-                                        ];
+                            <div class="yourPhotoWrap">
+                                <div class="friend-request-wrapp">
+                                    <div class="about-top-wrap" style="display:flex; justify-content: space-between;align-items:center;">
+                                        <div class="about-header" style="width:100%;">
+                                            <div class="about-icon">
+                                                <img src="assets/image/profile/yourPhoto.JPG" alt="">
+                                            </div>
+                                            <div class="about-text">Photos</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="about-main">
+                                    <?php $postImage = $loadFromUser->yourPhoto($profileId);
 
-                                        foreach ($menuItems as $class => $label) {
-                                        ?>
-                                            <li class="<?php echo $class; ?>"
-                                                data-userid="<?php echo $userid; ?>"
-                                                data-profileid="<?php echo $profileId; ?>">
-                                                <span class="activeAbout"
-                                                    data-userid="<?php echo $userid; ?>"
-                                                    data-profileid="<?php echo $profileId; ?>">
-                                                    <?php echo $label; ?>
-                                                </span>
-                                            </li>
-                                        <?php } ?>
-                                    </ul>
-                                </section>
+                                    foreach ($postImage as $image) {
+                                        $yourPhoto = json_decode($image->postImage);
+                                        for ($i = 0; $i < count($yourPhoto); $i++) {
+                                            echo '<img src = "' . BASE_URL . $yourPhoto[$i]->imageName . '" 
+                                            alt="" class="postImage" 
+                                            style="height:206px; width:206px; margin:0 10px 10px 0; cursor:pointer;"
+                                            data-userid = "' . $userid . '" 
+                                            data-profileid="' . $profileId . '" 
+                                            data-postid="' . $image->post_id . '" 
+                                            data-imageid="' . $i . '">';
+                                        }
+                                    }
 
-                                <section class="about-menu-details">
-                                    <?php require "C:\\xampp\\htdocs\\facebook\\includes\\about\\overview.php"; ?>
-                                </section>
+                                    ?>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -153,7 +138,6 @@
     <script src="assets/js/jquery.js " defer></script>
     <script src="assets/dist/emojionearea.min.js" defer></script>
     <script src="assets/js/profile/profile.js " defer></script>
-    <script src="assets/js/about/about.js" defer></script>
 </body>
 
 </html>
