@@ -8,16 +8,33 @@ class Post extends User
         $this->pdo = $pdo;
     }
 
-    public function posts($user_id, $profileId, $num)
+    public function posts($user_id, $profileId, $num, $home = false)
     {
         $userdata = $this->userData($user_id);
 
-        $stmt = $this->pdo->prepare("SELECT * FROM users LEFT JOIN profile ON users.user_id = profile.userId LEFT JOIN post ON post.userId = users.user_id WHERE post.userId = :user_id ORDER BY post.postedOn DESC LIMIT :num");
-        // Retrieve all user details from the users table.
-        // Join additional profile information from the profile table (if available) and post information from the post table.
-        // Filter the results to include only posts made by a specific user (:user_id).
-        // Order these posts by their posting date in descending order.
-        // Limit the number of posts returned to a specified number (:num)
+        if ($home) {
+            $stmt = $this->pdo->prepare("SELECT * FROM post p LEFT JOIN users u ON p.userId = u.user_id 
+            LEFT JOIN profile pr ON pr.userId = p.userId 
+            WHERE p.sharedBy IS NULL AND p.userId =:user_id 
+            UNION 
+            SELECT * FROM post p LEFT JOIN users u ON p.userId = u.user_id 
+            LEFT JOIN profile pr ON pr.userId = p.userId 
+            WHERE p.userId IN 
+            (SELECT request.reqtReceiver FROM request WHERE request.reqtSender = :user_id AND request.reqStatus = 1) OR 
+            p.userId IN 
+            ( SELECT request.reqtSender FROM request WHERE request.reqtReceiver = :user_id AND request.reqStatus = 1 ) OR 
+            p.userId IN 
+            (SELECT follow.receiver FROM follow WHERE follow.sender = :user_id ) 
+            ORDER BY postedOn DESC LIMIT :num");
+            // Retrieves Original posts (that are NOT shared by anyone) by a specific user (:user_id) and Posts from users who are friends with or followed by this user. The results are sorted by the most recent posts and limited to a specified number (:num).
+        } else {
+            $stmt = $this->pdo->prepare("SELECT * FROM users LEFT JOIN profile ON users.user_id = profile.userId LEFT JOIN post ON post.userId = users.user_id WHERE post.userId = :user_id ORDER BY post.postedOn DESC LIMIT :num");
+            // Retrieve all user details from the users table.
+            // Join additional profile information from the profile table (if available) and post information from the post table.
+            // Filter the results to include only posts made by a specific user (:user_id).
+            // Order these posts by their posting date in descending order.
+            // Limit the number of posts returned to a specified number (:num)
+        }
 
         $stmt->bindParam(":user_id", $profileId, PDO::PARAM_INT);
         $stmt->bindParam(":num", $num, PDO::PARAM_INT);
@@ -25,19 +42,33 @@ class Post extends User
         $posts = $stmt->fetchAll(PDO::FETCH_OBJ);
 
         foreach ($posts as $post) {
-            $main_react = $this->main_react($user_id, $post->post_id);
-            $react_max_show = $this->react_max_show($post->post_id);
-            $main_react_count = $this->main_react_count($post->post_id);
-            $commentDetails = $this->commentFetch($post->post_id);
-            $totalCommentCount = $this->totalCommentCount($post->post_id);
-            $totalShareCount = $this->totalShareCount($post->post_id);
-            if (empty($post->shareId)) {
+            $blockedUser = $this->block($post->postBy, $user_id);
+            if (!empty($blockedUser)) {
             } else {
-                $shareDetails = $this->shareFetch($post->shareId, $post->postBy);
-            }
+                $main_react = $this->main_react($user_id, $post->post_id);
+                $react_max_show = $this->react_max_show($post->post_id);
+                $main_react_count = $this->main_react_count($post->post_id);
+                $commentDetails = $this->commentFetch($post->post_id);
+                $totalCommentCount = $this->totalCommentCount($post->post_id);
+                $totalShareCount = $this->totalShareCount($post->post_id);
+                if (empty($post->shareId)) {
+                } else {
+                    $shareDetails = $this->shareFetch($post->shareId, $post->postBy);
+                }
 
-            require 'core/classes/postHelp.php';
+                $obj = $this;
+                require 'C:\\xampp\\htdocs\\facebook\\core\\classes\\postHelp.php';
+            }
         }
+    }
+
+    //get the details of this post, including the user and profile info of the person who made that post
+    public function postDetails($postid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users LEFT JOIN profile ON users.user_id = profile.userId LEFT JOIN post ON post.userId = users.user_id WHERE post.post_id = :postid  ");
+        $stmt->bindValue(':postid', $postid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
     public function postUpd($user_id, $post_id, $editText)

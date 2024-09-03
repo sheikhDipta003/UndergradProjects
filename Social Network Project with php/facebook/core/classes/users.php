@@ -163,6 +163,7 @@ class User
             return '' . date('j M Y', $time);
         }
     }
+
     public function delete($table, $array)
     {
         $sql = "DELETE FROM `{$table}`";
@@ -189,15 +190,6 @@ class User
         //$search.'%': The search term is appended with a % symbol, which is a wildcard character in SQL. This means the query will match any userLink that starts with the provided search term.
         //bindValue(1, $search.'%', PDO::PARAM_STR): This binds the value of the search term to the first placeholder (?) in the query.
 
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
-
-    public function searchMsgUser($msgUser, $userid)
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM users LEFT JOIN profile ON users.user_id = profile.userId WHERE users.user_id != ? AND users.userLink LIKE ? ");
-        $stmt->bindValue(1, $userid, PDO::PARAM_INT);
-        $stmt->bindValue(2,  $msgUser . '%', PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
@@ -306,5 +298,34 @@ class User
         $stmt->bindParam(":profileid", $profileId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    //fetch the row where profile-owner blocked this user or vice versa
+    public function block($profileId, $userid)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM block WHERE (blockerID = :userid AND blockedID = :profileid) OR (blockerID = :profileid AND blockedID = :userid) ");
+        $stmt->bindParam(":profileid", $profileId, PDO::PARAM_INT);
+        $stmt->bindParam(":userid", $userid, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    //get user details for which mention text matches user's first_name or userLink
+    public function loadMentionUser($mention, $user_id)
+    {
+        $stmt = $this->pdo->prepare("SELECT user_id, first_name, last_name, userLink, profilePic FROM users as u LEFT JOIN profile as p ON p.userId = u.user_id WHERE (first_name LIKE :mention OR userLink LIKE :mention) AND user_id != :userid ");
+        $stmt->bindValue(":mention", $mention . '%');
+        $stmt->bindValue(":userid", $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    //get all information about this user represented by userLink
+    public function mention_user_details($userLink)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE userLink = :userlink ");
+        $stmt->bindParam(":userlink", $userLink, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
-include '../load.php';
-include '../../connect/login.php';
+require 'C:\\xampp\\htdocs\\facebook\\core\\load.php';
+require 'C:\\xampp\\htdocs\\facebook\\connect\\login.php';
 
 $user_id = login::isLoggedIn();
 
@@ -33,8 +33,9 @@ function renderSearchResult($searchResults, $user_id, $isMsgUser = false)
     echo '</ul>';
 }
 
-if (isset($_POST['searchText'])) {
-    $searchText = $_POST['searchText'];
-    $searchResult = $loadFromUser->searchText($searchText, $user_id);
-    renderSearchResult($searchResult, $user_id);
+if (isset($_POST['msgUser'])) {
+    $msgUser = $_POST['msgUser'];
+    $userid = $_POST['userid'];
+    $searchResult = $loadFromMessage->searchMsgUser($msgUser, $userid);
+    renderSearchResult($searchResult, $userid, true);
 }

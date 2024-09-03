@@ -17,20 +17,15 @@ if (isset($_GET['username']) == true && empty($_GET['username']) === false) {
 }
 $profileData = $loadFromUser->userData($profileId);
 $userData = $loadFromUser->userData($userid);
-$notification = null;
-$notificationCount = [];
-$requestNotificationCount = null;
-$messageNotification = [];
 $requestCheck = $loadFromUser->requestCheck($userid, $profileId);
 $requestConf = $loadFromUser->requestConf($profileId, $userid);
 $followCheck = $loadFromUser->followCheck($profileId, $userid);
 $requestData = $loadFromUser->requestData($profileId);
 $friendsdata = $loadFromUser->friendsdata($profileId);
 $followersdata = $loadFromUser->followersdata($profileId);
-
-// $notification = $loadFromPost->notification($userid);
-// $notificationCount = $loadFromPost->notificationCount($userid);
-// $requestNotificationCount = $loadFromPost->requestNotificationCount($userid);
-// $messageNotification = $loadFromPost->messageNotificationCount($userid);
+$notification = $loadFromNotif->notification($userid);
+$notificationCount = $loadFromNotif->notificationCount($userid);
+$requestNotificationCount = $loadFromNotif->requestNotificationCount($userid);
+$messageNotification = $loadFromNotif->messageNotificationCount($userid);
 
 ?>

@@ -10,6 +10,8 @@
         <?php echo '' . $profileData->firstName . ' ' . $profileData->lastName . ''; ?>
     </title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/notification.css">
+    <link rel="stylesheet" href="assets/css/block.css">
     <link rel="stylesheet" href="assets/dist/emojionearea.min.css">
 </head>
 
@@ -24,6 +26,8 @@
     <main>
         <article class="main-area">
             <?php
+            $blockUser = $loadFromUser->block($profileId, $userid);
+
             if (!empty($blockUser)) { ?>
 
             <?php require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\blockUser.php";

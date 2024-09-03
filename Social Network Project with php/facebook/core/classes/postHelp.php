@@ -1,3 +1,4 @@
+<!-- 'obj' = $this or $loadFromPost, depending on where it is being called from -->
 <article class="profile-timeline">
     <section class="news-feed-comp">
         <div class="news-feed-text">
@@ -17,7 +18,7 @@
 
                         <section class="nf-pro-time-privacy">
                             <div class="nf-pro-time">
-                                <?php echo $this->timeAgo($post->postedOn); ?>
+                                <?php echo $obj->timeAgo($post->postedOn); ?>
                             </div>
 
                             <div class="nf-pro-privacy"></div>
@@ -52,7 +53,14 @@
                 <div class="nf-2-text" data-postid="<?php echo $post->post_id; ?>" data-userid="<?php echo $user_id ?>" data-profilePic="<?php echo $post->profilePic; ?>">
                     <?php
                     if (empty($post->shareId)) {  //this is NOT a shared post
-                        echo $post->post;
+                        $status_post = $post->post;
+                        $status_post = preg_replace(
+                            "/@([\w]+)/", 
+                            "<a href='" . BASE_URL . "$1'>$0</a>", 
+                            $status_post
+                        );
+                        echo $status_post;
+
                     } else {   //this IS a shared post
                         if (empty($shareDetails)) {
                             echo 'Share details not found.';
@@ -79,7 +87,7 @@
                                             </div>
                                             <div class="nf-pro-time-privacy">
                                                 <div class="nf-pro-time">
-                                                    <?php echo $this->timeAgo($share->postedOn); ?>
+                                                    <?php echo $obj->timeAgo($share->postedOn); ?>
                                                 </div>
                                                 <div class="nf-pro-privacy">
                                                     <img src="../../facebook/assets/image/privacy.JPG" alt="">
@@ -219,52 +227,61 @@
                         <?php
                         if (!empty($commentDetails)) {
                             foreach ($commentDetails as $comment) {
-                                $com_react_max_show = $this->com_react_max_show($comment->commentOn, $comment->commentID);
-                                $com_main_react_count = $this->com_main_react_count($comment->commentOn, $comment->commentID);
-                                $commentReactCheck = $this->commentReactCheck($user_id, $comment->commentOn, $comment->commentID);
-                                $timeAgo = $this->timeAgo($comment->commentAt);
+                                $com_react_max_show = $obj->com_react_max_show($comment->commentOn, $comment->commentID);
+                                $com_main_react_count = $obj->com_main_react_count($comment->commentOn, $comment->commentID);
+                                $commentReactCheck = $obj->commentReactCheck($user_id, $comment->commentOn, $comment->commentID);
+                                $timeAgo = $obj->timeAgo($comment->commentAt);
+
+                                $blockedUserComment = $obj->block($comment->commentBy, $user_id);
+                                if (!empty($blockedUserComment)) {
+                                } else {
                         ?>
-                                <li class="new-comment">
-                                    <article class="com-details">
-                                        <section class="com-pro-pic">
-                                            <a href="#">
-                                                <span class="top-pic"><img src="<?php echo $comment->profilePic; ?>" alt=""></span>
-                                            </a>
-                                        </section>
-                                        <section class="com-pro-wrap">
-                                            <div class="com-text-react-wrap">
-                                                <?php require 'core/classes/commentOnPostHelp.php'; ?>
-                                            </div>
+                                    <li class="new-comment">
+                                        <article class="com-details">
+                                            <section class="com-pro-pic">
+                                                <a href="#">
+                                                    <span class="top-pic"><img src="<?php echo $comment->profilePic; ?>" alt=""></span>
+                                                </a>
+                                            </section>
+                                            <section class="com-pro-wrap">
+                                                <div class="com-text-react-wrap">
+                                                    <?php require 'core/classes/commentOnPostHelp.php'; ?>
+                                                </div>
 
-                                            <div class="reply-wrap">
-                                                <section class="reply-text-wrap">
-                                                    <ul class="old-reply">
-                                                        <?php
-                                                        $replyDetails = $this->replyFetch($comment->commentOn, $comment->commentID);
+                                                <div class="reply-wrap">
+                                                    <section class="reply-text-wrap">
+                                                        <ul class="old-reply">
+                                                            <?php
+                                                            $replyDetails = $obj->replyFetch($comment->commentOn, $comment->commentID);
 
-                                                        foreach ($replyDetails as $reply) {
-                                                            $reply_react_count = $this->reply_main_react_count($reply->commentOn, $reply->commentID, $reply->commentReplyID);
-                                                            $reply_react_max_show = $this->reply_react_max_show($reply->commentOn, $reply->commentID, $reply->commentReplyID);
-                                                            $replyReactCheck = $this->replyReactCheck($user_id, $reply->commentOn, $reply->commentID, $reply->commentReplyID);
-                                                            $timeAgoForCom = $this->timeAgoForCom($reply->commentAt);
-                                                        ?>
-                                                        <?php
-                                                            require "C:\\xampp\\htdocs\\facebook\\core\\classes\\replyOnPostHelp.php";
-                                                        }
+                                                            foreach ($replyDetails as $reply) {
+                                                                $reply_react_count = $obj->reply_main_react_count($reply->commentOn, $reply->commentID, $reply->commentReplyID);
+                                                                $reply_react_max_show = $obj->reply_react_max_show($reply->commentOn, $reply->commentID, $reply->commentReplyID);
+                                                                $replyReactCheck = $obj->replyReactCheck($user_id, $reply->commentOn, $reply->commentID, $reply->commentReplyID);
+                                                                $timeAgoForCom = $obj->timeAgoForCom($reply->commentAt);
 
-                                                        ?>
-                                                    </ul>
-                                                </section>
+                                                                $blockedUserReply = $obj->block($reply->commentBy, $user_id);
+                                                                if (!empty($blockedUserReply)) {
+                                                                } else {
+                                                            ?>
+                                                            <?php
+                                                                    require "C:\\xampp\\htdocs\\facebook\\core\\classes\\replyOnPostHelp.php";
+                                                                }
+                                                            }
 
-                                                <section class="replyInput">
+                                                            ?>
+                                                        </ul>
+                                                    </section>
 
-                                                </section>
-                                            </div>
-                                        </section>
-                                    </article>
-                                </li>
+                                                    <section class="replyInput">
+
+                                                    </section>
+                                                </div>
+                                            </section>
+                                        </article>
+                                    </li>
                         <?php
-
+                                }
                             }
                         }
                         ?>

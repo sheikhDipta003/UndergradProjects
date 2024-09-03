@@ -37,6 +37,11 @@ if (isset($_POST['reactType']) || isset($_POST['deleteReactType'])) {
         // If the same logged-in user previously reacted on the same post and sends a new react, first delete that react-record, then create a new record containing the new react info.
         $loadFromUser->delete('react', array('reactBy' => $userid, 'reactOn' => $postid, 'reactCommentOn' => '0', 'reactReplyOn' => '0'));
         $loadFromUser->create('react', array('reactBy' => $userid, 'reactOn' => $postid, 'reactType' => $reactType, 'reactTimeOn' => date('Y-m-d H:i:s')));
+
+        //notify all users except current one about this react update
+        if($profileid != $userid){
+            $loadFromUser->create('notification',array('notificationFrom'=>$userid, 'notificationFor' => $profileid, 'postid' => $postid, 'type'=>'postReact', 'status'=> '0', 'notificationCount'=>'0', 'notificationOn'=>date('Y-m-d H:i:s')));
+        }
     } else if (isset($_POST['deleteReactType'])) {
         // If the same logged-in user previously reacted on the same post, then delete that react-record
         $loadFromUser->delete('react', array('reactBy' => $userid, 'reactOn' => $postid, 'reactCommentOn' => '0', 'reactReplyOn' => '0'));

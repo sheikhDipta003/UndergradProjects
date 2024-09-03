@@ -11,6 +11,11 @@ if (isset($_POST['comment'])) {
     $profileid = $_POST['profileid'];
 
     $commentid = $loadFromUser->create('comments', array('commentBy' => $userid, 'comment_parent_id' => $postid, 'comment' => $comment_text, 'commentOn' => $postid, 'commentAt' => date('Y-m-d H:i:s')));
+
+    if($profileid != $userid){
+        $loadFromUser->create('notification',array('notificationFrom'=>$userid, 'notificationFor' => $profileid, 'postid' => $postid, 'type'=>'comment', 'status'=> '0', 'notificationCount'=>'0', 'notificationOn'=>date('Y-m-d H:i:s')));
+    }
+
     $commentDetails = $loadFromPost->lastCommentFetch($commentid);
 
     if (!empty($commentDetails)) {

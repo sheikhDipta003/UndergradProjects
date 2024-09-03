@@ -18,7 +18,7 @@
     </div>
 
     <div class="overview-right" style="flex-basis:30%;">
-        <a href="setting.php" class="overview-right">
+        <a href="settings.php" class="overview-right">
             <section class="overview-mobile align-middle" style="margin-bottom:10px;">
                 <div class="overview-mobile-icon align-middle"><img src="assets/image/profile/overview%20mobile.JPG" alt="" style="margin-right:5px;"></div>
                 <div class="overview-mobile-number"><?php echo $userData->mobile ? $userData->mobile : $userData->email; ?></div>

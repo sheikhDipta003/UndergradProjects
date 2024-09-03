@@ -43,6 +43,11 @@ if (isset($_POST['commentid'])) {
     $loadFromUser->delete('react', array('reactBy' => $userid, 'reactOn' => $postid, 'reactCommentOn' => $commentid, 'reactReplyOn' => $commentparentid));
     $loadFromUser->create('react', array('reactBy' => $userid, 'reactOn' => $postid, 'reactCommentOn' => $commentid, 'reactReplyOn' => $commentparentid, 'reactType' => $reactType, 'reactTimeOn' => date('Y-m-d H:i:s')));
 
+    //notify all users except current user about this react on this reply to this comment
+    if($profileid != $userid){
+        $loadFromUser->create('notification',array('notificationFrom'=>$userid, 'notificationFor' => $profileid, 'postid' => $postid, 'type'=>'commentReact', 'status'=> '0', 'notificationCount'=>'0', 'notificationOn'=>date('Y-m-d H:i:s')));
+    }
+    
     $reply_react_count = $loadFromPost->reply_main_react_count($postid, $commentid, $commentparentid);
     $reply_react_max_show = $loadFromPost->reply_react_max_show($postid, $commentid, $commentparentid);
 

@@ -1,0 +1,125 @@
+/*.......................///////Notification//////...................*/
+
+.notification-count {
+    position: relative;
+}
+
+.notification-svg .active-noti2 {
+    fill: black;
+    stroke: black;
+}
+
+.active-noti {
+    fill: white;
+    stroke: white;
+}
+
+ellipse.cls-1.active-noti {
+    fill: black;
+    stroke: black;
+}
+
+path.cls-1.active-noti {
+    fill: black;
+    stroke: black;
+}
+
+path.cls-1.msg-active-noti {
+    fill: black;
+}
+
+.notification-svg:hover .cls-2 {
+    fill: black;
+    stroke: white;
+}
+
+.notification-count {
+    position: absolute;
+    top: -5px;
+    left: 26px;
+    background-color: red;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+.request-count {
+    position: absolute;
+    top: -5px;
+    left: 26px;
+    background-color: red;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+.message-count {
+    position: absolute;
+    top: -5px;
+    left: 26px;
+    background-color: red;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+.notification-list-wrap {
+    position: absolute;
+    color: black;
+    top: 31px;
+    z-index: 9;
+    display: none;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.request-notification-list-wrap {
+    position: absolute;
+    color: black;
+    top: 31px;
+    z-index: 9;
+    display: none;
+}
+
+.item-notification {
+    display: flex;
+    align-items: center;
+    width: 320px;
+    padding: 10px 10px;
+    margin-bottom: 5px;
+}
+
+.item-notification-wrap:hover {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 320px;
+    background-color: #6f6f6f;
+    color: white;
+    padding: 0 20px 0 0;
+}
+
+li.item-notification-wrap a:hover {
+    color: white;
+}
+
+li.item-notification-wrap {
+    border-bottom: 1px solid lightgray;
+}
+
+li.item-notification-wrap a {
+    color: gray;
+}
+
+.unread-notification {
+    background-color: #ffeb3b63;
+}
+
+.read-notification {
+    background-color: #fff;
+}
+
+ul.notify-ul {
+    background-color: white;
+    box-shadow: 2px 2px 5px grey;
+}
+
+
+/*.......................///////Notification END//////...................*/

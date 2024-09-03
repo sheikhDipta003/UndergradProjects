@@ -12,8 +12,13 @@ if (isset($_POST['replyComment'])) {
     $profileid = $_POST['profileid'];
 
     $replyCommentId = $loadFromUser->create('comments', array('commentBy' => $userid, 'comment_parent_id' => $postid, 'commentReplyID' => $commentid, 'comment' => $comment_text, 'commentOn' => $postid, 'commentAt' => date('Y-m-d H:i:s')));
+    
+    //notify all users except current user about this reply on this comment on this post
+    if($profileid != $userid){
+        $loadFromUser->create('notification',array('notificationFrom'=>$userid, 'notificationFor' => $profileid, 'postid' => $postid, 'type'=>'comment', 'status'=> '0', 'notificationCount'=>'0', 'notificationOn'=>date('Y-m-d H:i:s')));
+    }
+    
     $replyDetails = $loadFromPost->lastReplyFetch($replyCommentId);
-
     foreach ($replyDetails as $reply) {
         $reply_react_count = $loadFromPost->reply_main_react_count($reply->commentOn, $reply->commentID, $reply->commentReplyID);
         $reply_react_max_show = $loadFromPost->reply_react_max_show($reply->commentOn, $reply->commentID, $reply->commentReplyID);

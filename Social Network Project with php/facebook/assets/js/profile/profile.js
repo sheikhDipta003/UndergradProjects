@@ -167,11 +167,13 @@ $(document).ready(function () {
   });
 
   $(".status-share-button").on("click", function () {
+    var regex = /[#|@](\w+)$/gi;
     var statusText = $(".emojionearea-editor").html();
     var formData = new FormData();
     var storeImage = [];
     var error_images = [];
     var files = $("#multiple_files")[0].files;
+    var mention_user = statusText.match(regex);
 
     console.log("status-share-button clicked");
 
@@ -249,6 +251,7 @@ $(document).ready(function () {
         BASE_URL + "core/ajax/postSubmit.php",
         {
           onlyStatusText: statusText,
+          mention_user: mention_user
         },
         function (data) {
           $("adv_dem").html(data);
@@ -262,6 +265,7 @@ $(document).ready(function () {
         {
           stIm: stIm,
           statusText: statusText,
+          mention_user: mention_user
         },
         function (data) {
           $("#adv_dem").html(data);
@@ -314,6 +318,12 @@ $(document).ready(function () {
         },
       },
       {
+        element: $(".notification-list-wrap"),
+        action: function () {
+          $(this.element).hide();
+        },
+      },
+      {
         element: $(".profile-status-write"),
         action: function () {
           $(".status-share-button-wrap").hide("0.2");
@@ -337,6 +347,30 @@ $(document).ready(function () {
           $(this.element).empty();
         },
       },
+      {
+        element: $(".com-option-details-container"),
+        action: function () {
+          $(this.element).empty();
+        },
+      },
+      {
+        element: $(".reply-option-details-container"),
+        action: function () {
+          $(this.element).empty();
+        },
+      },
+      {
+        element: $(".shared-post-option-details-container"),
+        action: function () {
+          $(this.element).empty();
+        },
+      },
+      {
+        element: $(".change-input"),
+        action: function () {
+          $(this.element).parents('.top-box-show2').empty();
+        },
+      },
     ];
 
     $.each(containers, function (index, container) {
@@ -347,6 +381,18 @@ $(document).ready(function () {
         container.action();
       }
     });
+  });
+
+  $(document).on("click", ".watchmore-wrap", function () {
+    $(".setting-logout-wrap").toggle();
+  });
+
+  $(document).on("click", ".setting-option", function () {
+    window.location.href = "settings.php";
+  });
+
+  $(document).on("click", ".logout-option", function () {
+    window.location.href = "logout.php";
   });
 
   loadScript("assets/js/profile/postEdit.js", function () {
@@ -381,4 +427,19 @@ $(document).ready(function () {
     console.log("follow.js loaded successfully");
   });
 
+  loadScript("assets/js/profile/notify.js", function () {
+    console.log("notify.js loaded successfully");
+  });
+
+  loadScript("assets/js/profile/settings.js", function () {
+    console.log("settings.js loaded successfully");
+  });
+
+  loadScript("assets/js/profile/block.js", function () {
+    console.log("block.js loaded successfully");
+  });
+
+  loadScript("assets/js/profile/mention.js", function () {
+    console.log("mention.js loaded successfully");
+  });
 });
