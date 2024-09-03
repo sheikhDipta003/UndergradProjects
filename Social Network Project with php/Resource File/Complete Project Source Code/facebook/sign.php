@@ -4,144 +4,135 @@ require 'connect/DB.php';
 require 'core/load.php';
 
 
-if( isset($_POST['first-name']) && !empty($_POST['first-name'])){
-$upFirst = $_POST['first-name'];
+if (isset($_POST['first-name']) && !empty($_POST['first-name'])) {
+    $upFirst = $_POST['first-name'];
     $upLast = $_POST['last-name'];
     $upEmailMobile = $_POST['email-mobile'];
     $upPassword = $_POST['up-password'];
     $birthDay = $_POST['birth-day'];
     $birthMonth = $_POST['birth-month'];
     $birthYear = $_POST['birth-year'];
-    if(!empty($_POST['gen'])){
-    $upgen = $_POST['gen'];
+    if (!empty($_POST['gen'])) {
+        $upgen = $_POST['gen'];
     }
-    $birth = ''.$birthYear.'-'.$birthMonth.'-'.$birthDay.'';
+    $birth = '' . $birthYear . '-' . $birthMonth . '-' . $birthDay . '';
 
-    if(empty($upFirst) or empty($upLast) or empty($upEmailMobile) or empty($upgen)){
+    if (empty($upFirst) or empty($upLast) or empty($upEmailMobile) or empty($upgen)) {
         $error = 'All feilds are required';
-    }else{
-$first_name = $loadFromUser->checkInput($upFirst);
-$last_name = $loadFromUser->checkInput($upLast);
-$email_mobile = $loadFromUser->checkInput($upEmailMobile);
-$password = $loadFromUser->checkInput($upPassword);
-$screenName = ''.$first_name.'_'.$last_name.'';
-        if(DB::query('SELECT screenName FROM users WHERE screenName = :screenName', array(':screenName' => $screenName ))){
-$screenRand = rand();
-            $userLink = ''.$screenName.''.$screenRand.'';
-        }else{
+    } else {
+        $first_name = $loadFromUser->checkInput($upFirst);
+        $last_name = $loadFromUser->checkInput($upLast);
+        $email_mobile = $loadFromUser->checkInput($upEmailMobile);
+        $password = $loadFromUser->checkInput($upPassword);
+        $screenName = '' . $first_name . '_' . $last_name . '';
+        if (DB::query('SELECT screenName FROM users WHERE screenName = :screenName', array(':screenName' => $screenName))) {
+            $screenRand = rand();
+            $userLink = '' . $screenName . '' . $screenRand . '';
+        } else {
             $userLink = $screenName;
         }
-if(!preg_match("^[_a-z0-9-]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^",$email_mobile)){
-   if(!preg_match("^[0-9]{11}^", $email_mobile)){
-       $error = 'Email id or Mobile number is not correct. Please try again.';
-   }else{
-     $mob = strlen((string)$email_mobile);
+        if (!preg_match("^[_a-z0-9-]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^", $email_mobile)) {
+            if (!preg_match("^[0-9]{11}^", $email_mobile)) {
+                $error = 'Email id or Mobile number is not correct. Please try again.';
+            } else {
+                $mob = strlen((string)$email_mobile);
 
-       if($mob > 11 || $mob < 11){
-           $error = 'Mobile number is not valid';
-       }else if(strlen($password) <5 || strlen($password) >= 60){
-           $error = 'Password is not correct';
-       }else{
-           if(DB::query('SELECT mobile FROM users WHERE mobile=:mobile', array(':mobile'=>$email_mobile))){
-               $error = 'Mobile number is already in use.';
-           }else{
-               $user_id=$loadFromUser->create('users', array('first_name'=>$first_name,'last_name'=>$last_name, 'mobile' => $email_mobile, 'password'=>password_hash($password, PASSWORD_BCRYPT),'screenName'=>$screenName,'userLink'=>$userLink, 'birthday'=>$birth, 'gender'=>$upgen));
+                if ($mob > 11 || $mob < 11) {
+                    $error = 'Mobile number is not valid';
+                } else if (strlen($password) < 5 || strlen($password) >= 60) {
+                    $error = 'Password is not correct';
+                } else {
+                    if (DB::query('SELECT mobile FROM users WHERE mobile=:mobile', array(':mobile' => $email_mobile))) {
+                        $error = 'Mobile number is already in use.';
+                    } else {
+                        $user_id = $loadFromUser->create('users', array('first_name' => $first_name, 'last_name' => $last_name, 'mobile' => $email_mobile, 'password' => password_hash($password, PASSWORD_BCRYPT), 'screenName' => $screenName, 'userLink' => $userLink, 'birthday' => $birth, 'gender' => $upgen));
 
-                $loadFromUser->create('profile', array('userId'=>$user_id, 'birthday'=> $birth, 'firstName' => $first_name, 'lastName'=>$last_name, 'profilePic'=>'assets/image/defaultProfile.png','coverPic'=>'assets/image/defaultCover.png', 'gender'=>$upgen));
+                        $loadFromUser->create('profile', array('userId' => $user_id, 'birthday' => $birth, 'firstName' => $first_name, 'lastName' => $last_name, 'profilePic' => 'assets/image/defaultProfile.png', 'coverPic' => 'assets/image/defaultCover.png', 'gender' => $upgen));
 
-               $tstrong = true;
-            $token = bin2hex(openssl_random_pseudo_bytes(64, $tstrong));
-          $loadFromUser->create('token', array('token'=>sha1($token), 'user_id'=>$user_id));
+                        $tstrong = true;
+                        $token = bin2hex(openssl_random_pseudo_bytes(64, $tstrong));
+                        $loadFromUser->create('token', array('token' => sha1($token), 'user_id' => $user_id));
 
-          setcookie('FBID', $token, time()+60*60*24*7, '/', NULL, NULL, true);
+                        setcookie('FBID', $token, time() + 60 * 60 * 24 * 7, '/', NULL, NULL, true);
 
-          header('Location: index.php');
+                        header('Location: index.php');
+                    }
+                }
+            }
+        } else {
+            if (!filter_var($email_mobile)) {
+                $error = "Invalid Email Format";
+            } else if (strlen($first_name) > 20 || strlen($first_name) < 2) {
+                $error = "Name must be between 2-20 character";
+            } else if (strlen($password) < 5 || strlen($password) >= 60) {
+                $error = "The password is either too shor or too long";
+            } else {
+                if ((filter_var($email_mobile, FILTER_VALIDATE_EMAIL)) && $loadFromUser->checkEmail($email_mobile) === true) {
+                    $error = "Email is already in use";
+                } else {
 
+                    $user_id = $loadFromUser->create('users', array('first_name' => $first_name, 'last_name' => $last_name, 'email' => $email_mobile, 'password' => password_hash($password, PASSWORD_BCRYPT), 'screenName' => $screenName, 'userLink' => $userLink, 'birthday' => $birth, 'gender' => $upgen));
 
-           }
-}
-   }
-}else{
-  if(!filter_var($email_mobile)){
-      $error = "Invalid Email Format";
-  }else if(strlen($first_name) > 20 || strlen($first_name) <2){
-      $error = "Name must be between 2-20 character";
-  }else if(strlen($password) <5 || strlen($password) >= 60){
-      $error = "The password is either too shor or too long";
-  }else{
-      if((filter_var($email_mobile,FILTER_VALIDATE_EMAIL)) && $loadFromUser->checkEmail($email_mobile) === true){
-          $error = "Email is already in use";
-      }else{
-
-         $user_id = $loadFromUser->create('users', array('first_name'=>$first_name,'last_name'=>$last_name, 'email' => $email_mobile, 'password'=>password_hash($password, PASSWORD_BCRYPT),'screenName'=>$screenName,'userLink'=>$userLink, 'birthday'=>$birth, 'gender'=>$upgen));
-
-          $loadFromUser->create('profile', array('userId'=>$user_id, 'birthday'=>$birth, 'firstName' => $first_name, 'lastName'=>$last_name, 'profilePic'=>'assets/image/defaultProfile.png','coverPic'=>'assets/image/defaultCover.png', 'gender'=>$upgen));
+                    $loadFromUser->create('profile', array('userId' => $user_id, 'birthday' => $birth, 'firstName' => $first_name, 'lastName' => $last_name, 'profilePic' => 'assets/image/defaultProfile.png', 'coverPic' => 'assets/image/defaultCover.png', 'gender' => $upgen));
 
 
-$tstrong = true;
-$token = bin2hex(openssl_random_pseudo_bytes(64, $tstrong));
-          $loadFromUser->create('token', array('token'=>sha1($token), 'user_id'=>$user_id));
+                    $tstrong = true;
+                    $token = bin2hex(openssl_random_pseudo_bytes(64, $tstrong));
+                    $loadFromUser->create('token', array('token' => sha1($token), 'user_id' => $user_id));
 
-          setcookie('FBID', $token, time()+60*60*24*7, '/', NULL, NULL, true);
+                    setcookie('FBID', $token, time() + 60 * 60 * 24 * 7, '/', NULL, NULL, true);
 
-          header('Location: index.php');
-
-      }
-  }
-}
-
-
-
+                    header('Location: index.php');
+                }
+            }
+        }
     }
 }
 
-if(isset($_POST['in-email-mobile']) && !empty($_POST['in-email-mobile'])){
+if (isset($_POST['in-email-mobile']) && !empty($_POST['in-email-mobile'])) {
     $email_mobile = $_POST['in-email-mobile'];
     $in_pass = $_POST['in-pass'];
 
-    if(!preg_match("^[_a-z0-9-]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^", $email_mobile)){
-        if(!preg_match("^[0-9]{11}^", $email_mobile)){
+    if (!preg_match("^[_a-z0-9-]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^", $email_mobile)) {
+        if (!preg_match("^[0-9]{11}^", $email_mobile)) {
             $error = 'Email or Phone is not correct. Please try again';
-        }else{
+        } else {
 
-        if(DB::query("SELECT mobile FROM users WHERE mobile = :mobile", array(':mobile'=>$email_mobile))){
-            if(password_verify($in_pass, DB::query('SELECT password FROM users WHERE mobile=:mobile', array(':mobile'=>$email_mobile))[0]['password'])){
+            if (DB::query("SELECT mobile FROM users WHERE mobile = :mobile", array(':mobile' => $email_mobile))) {
+                if (password_verify($in_pass, DB::query('SELECT password FROM users WHERE mobile=:mobile', array(':mobile' => $email_mobile))[0]['password'])) {
 
-                $user_id=DB::query('SELECT user_id FROM users WHERE mobile=:mobile', array(':mobile'=>$email_mobile))[0]['user_id'];
-               $tstrong = true;
-$token = bin2hex(openssl_random_pseudo_bytes(64, $tstrong));
-          $loadFromUser->create('token', array('token'=>sha1($token), 'user_id'=>$user_id));
+                    $user_id = DB::query('SELECT user_id FROM users WHERE mobile=:mobile', array(':mobile' => $email_mobile))[0]['user_id'];
+                    $tstrong = true;
+                    $token = bin2hex(openssl_random_pseudo_bytes(64, $tstrong));
+                    $loadFromUser->create('token', array('token' => sha1($token), 'user_id' => $user_id));
 
-          setcookie('FBID', $token, time()+60*60*24*7, '/', NULL, NULL, true);
+                    setcookie('FBID', $token, time() + 60 * 60 * 24 * 7, '/', NULL, NULL, true);
 
-          header('Location: index.php');
-            }else{
-                $error="Password is not correct";
+                    header('Location: index.php');
+                } else {
+                    $error = "Password is not correct";
+                }
+            } else {
+                $error = "User hasn't found.";
             }
-
-        }else{
-            $error="User hasn't found.";
         }
+    } else {
+        if (DB::query("SELECT email FROM users WHERE email = :email", array(':email' => $email_mobile))) {
+            if (password_verify($in_pass, DB::query('SELECT password FROM users WHERE email=:email', array(':email' => $email_mobile))[0]['password'])) {
 
-        }
-    }else{
-        if(DB::query("SELECT email FROM users WHERE email = :email", array(':email'=>$email_mobile))){
-            if(password_verify($in_pass, DB::query('SELECT password FROM users WHERE email=:email', array(':email'=>$email_mobile))[0]['password'])){
+                $user_id = DB::query('SELECT user_id FROM users WHERE email=:email', array(':email' => $email_mobile))[0]['user_id'];
+                $tstrong = true;
+                $token = bin2hex(openssl_random_pseudo_bytes(64, $tstrong));
+                $loadFromUser->create('token', array('token' => sha1($token), 'user_id' => $user_id));
 
-                $user_id=DB::query('SELECT user_id FROM users WHERE email=:email', array(':email'=>$email_mobile))[0]['user_id'];
-               $tstrong = true;
-$token = bin2hex(openssl_random_pseudo_bytes(64, $tstrong));
-          $loadFromUser->create('token', array('token'=>sha1($token), 'user_id'=>$user_id));
+                setcookie('FBID', $token, time() + 60 * 60 * 24 * 7, '/', NULL, NULL, true);
 
-          setcookie('FBID', $token, time()+60*60*24*7, '/', NULL, NULL, true);
-
-          header('Location: index.php');
-            }else{
-                $error="Password is not correct";
+                header('Location: index.php');
+            } else {
+                $error = "Password is not correct";
             }
-
-        }else{
-            $error="User hasn't found.";
+        } else {
+            $error = "User hasn't found.";
         }
     }
 }
@@ -187,7 +178,9 @@ $token = bin2hex(openssl_random_pseudo_bytes(64, $tstrong));
         </div>
         <div class="right-side">
             <div class="error">
-                <?php if(!empty($error)){echo $error;} ?>
+                <?php if (!empty($error)) {
+                    echo $error;
+                } ?>
             </div>
             <h1 style="color:#212121;">Create an account</h1>
             <div style="color:#212121; font-size:20px">It's free and always will be</div>
@@ -259,7 +252,6 @@ $token = bin2hex(openssl_random_pseudo_bytes(64, $tstrong));
             return new Date(year, month, 0).getDate();
 
         }
-
     </script>
 
 </body>

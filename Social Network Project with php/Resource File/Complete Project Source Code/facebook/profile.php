@@ -3,28 +3,28 @@
 include 'connect/login.php';
 include 'core/load.php';
 
-if(login::isLoggedIn()){
+if (login::isLoggedIn()) {
     $userid = login::isLoggedIn();
-}else{
-header('location: sign.php');
+} else {
+    header('location: sign.php');
 }
 
-if(isset($_GET['username']) == true && empty($_GET['username']) === false){
+if (isset($_GET['username']) == true && empty($_GET['username']) === false) {
     $username = $loadFromUser->checkInput($_GET['username']);
     $profileId = $loadFromUser->userIdByUsername($username);
-}else{
+} else {
     $profileId = $userid;
 }
-    $profileData = $loadFromUser->userData($profileId);
-    $userData = $loadFromUser->userData($userid);
-    $requestCheck =$loadFromPost->requestCheck($userid, $profileId);
-    $requestConf = $loadFromPost->requestConf($profileId, $userid);
-    $followCheck= $loadFromPost->followCheck($profileId, $userid);
+$profileData = $loadFromUser->userData($profileId);
+$userData = $loadFromUser->userData($userid);
+$requestCheck = $loadFromPost->requestCheck($userid, $profileId);
+$requestConf = $loadFromPost->requestConf($profileId, $userid);
+$followCheck = $loadFromPost->followCheck($profileId, $userid);
 
-    $notification = $loadFromPost->notification($userid);
-    $notificationCount = $loadFromPost->notificationCount($userid);
-    $requestNotificationCount = $loadFromPost->requestNotificationCount($userid);
-  $messageNotification = $loadFromPost->messageNotificationCount($userid);
+$notification = $loadFromPost->notification($userid);
+$notificationCount = $loadFromPost->notificationCount($userid);
+$requestNotificationCount = $loadFromPost->requestNotificationCount($userid);
+$messageNotification = $loadFromPost->messageNotificationCount($userid);
 
 
 
@@ -37,7 +37,7 @@ if(isset($_GET['username']) == true && empty($_GET['username']) === false){
 <head>
     <meta charset="UTF-8">
     <title>
-        <?php echo ''.$profileData->firstName.' '.$profileData->lastName.''; ?>
+        <?php echo '' . $profileData->firstName . ' ' . $profileData->lastName . ''; ?>
     </title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/dist/emojionearea.min.css">
@@ -82,7 +82,11 @@ if(isset($_GET['username']) == true && empty($_GET['username']) === false){
                     <span class="top-home top-css border-left">Home</span>
                 </a>
                 <div class="request-top-notification top-css top-icon border-left " style="position:relative;">
-                    <?php if(empty(count($requestNotificationCount))){echo '<div class="request-count"></div>'; }else{echo '<div class="request-count">'.count($requestNotificationCount).'</div>'; } ?>
+                    <?php if (empty(count($requestNotificationCount))) {
+                        echo '<div class="request-count"></div>';
+                    } else {
+                        echo '<div class="request-count">' . count($requestNotificationCount) . '</div>';
+                    } ?>
 
                     <svg xmlns="http://www.w3.org/2000/svg" class="request-svg" viewBox="0 0 15.8 13.63" style="height:20px; width:20px;">
                         <defs>
@@ -90,47 +94,59 @@ if(isset($_GET['username']) == true && empty($_GET['username']) === false){
                                 .cls-1 {
                                     fill: #1a2947;
                                 }
-
                             </style>
                         </defs>
                         <title>request</title>
                         <g id="Layer_2" data-name="Layer 2">
                             <g id="Layer_1-2" data-name="Layer 1">
-                                <path class="cls-1 <?php if(empty(count($requestNotificationCount))){}else{echo 'active-noti'; }?>" d="M13.2,7.77a7.64,7.64,0,0,0-1.94-.45,7.64,7.64,0,0,0-1.93.45,3.78,3.78,0,0,0-2.6,3.55.7.7,0,0,0,.45.71,12.65,12.65,0,0,0,4.08.59A12.7,12.7,0,0,0,15.35,12a.71.71,0,0,0,.45-.71A3.79,3.79,0,0,0,13.2,7.77Z" />
-                                <ellipse class="cls-1 <?php if(empty(count($requestNotificationCount))){}else{echo 'active-noti'; }?>" cx="11.34" cy="4.03" rx="2.48" ry="2.9" />
-                                <path class="cls-1 <?php if(empty(count($requestNotificationCount))){}else{echo 'active-noti'; }?>" d="M7.68,7.88a9,9,0,0,0-2.3-.54,8.81,8.81,0,0,0-2.29.54A4.5,4.5,0,0,0,0,12.09a.87.87,0,0,0,.53.85,15.28,15.28,0,0,0,4.85.68,15.25,15.25,0,0,0,4.85-.68.87.87,0,0,0,.53-.85A4.49,4.49,0,0,0,7.68,7.88Z" />
-                                <ellipse class="cls-1 <?php if(empty(count($requestNotificationCount))){}else{echo 'active-noti'; }?>" cx="5.47" cy="3.44" rx="2.94" ry="3.44" />
+                                <path class="cls-1 <?php if (empty(count($requestNotificationCount))) {
+                                                    } else {
+                                                        echo 'active-noti';
+                                                    } ?>" d="M13.2,7.77a7.64,7.64,0,0,0-1.94-.45,7.64,7.64,0,0,0-1.93.45,3.78,3.78,0,0,0-2.6,3.55.7.7,0,0,0,.45.71,12.65,12.65,0,0,0,4.08.59A12.7,12.7,0,0,0,15.35,12a.71.71,0,0,0,.45-.71A3.79,3.79,0,0,0,13.2,7.77Z" />
+                                <ellipse class="cls-1 <?php if (empty(count($requestNotificationCount))) {
+                                                        } else {
+                                                            echo 'active-noti';
+                                                        } ?>" cx="11.34" cy="4.03" rx="2.48" ry="2.9" />
+                                <path class="cls-1 <?php if (empty(count($requestNotificationCount))) {
+                                                    } else {
+                                                        echo 'active-noti';
+                                                    } ?>" d="M7.68,7.88a9,9,0,0,0-2.3-.54,8.81,8.81,0,0,0-2.29.54A4.5,4.5,0,0,0,0,12.09a.87.87,0,0,0,.53.85,15.28,15.28,0,0,0,4.85.68,15.25,15.25,0,0,0,4.85-.68.87.87,0,0,0,.53-.85A4.49,4.49,0,0,0,7.68,7.88Z" />
+                                <ellipse class="cls-1 <?php if (empty(count($requestNotificationCount))) {
+                                                        } else {
+                                                            echo 'active-noti';
+                                                        } ?>" cx="5.47" cy="3.44" rx="2.94" ry="3.44" />
                             </g>
                         </g>
                     </svg>
                     <div class="request-notification-list-wrap">
 
                         <ul style="margin:0; padding:0;" class="notify-ul">
-                            <?php if(empty($requestNotificationCount)){}else{
-                                foreach($requestNotificationCount as $notify){
+                            <?php if (empty($requestNotificationCount)) {
+                            } else {
+                                foreach ($requestNotificationCount as $notify) {
 
-                                ?>
+                            ?>
 
-                            <li class="item-notification-wrap <?php echo ($notify->status == '0') ? 'unread-notification': 'read-notification' ?>" data-postid="<?php echo $notify->postid; ?>" data-notificationid="<?php echo $notify->ID; ?>" data-profileid="<?php echo $notify->userId; ?>">
-                                <?php if($notify->type == 'request'){ ?>
-                                <a href="<?php echo $notify->userLink; ?>" target="_blank" class="item-notification">
+                                    <li class="item-notification-wrap <?php echo ($notify->status == '0') ? 'unread-notification' : 'read-notification' ?>" data-postid="<?php echo $notify->postid; ?>" data-notificationid="<?php echo $notify->ID; ?>" data-profileid="<?php echo $notify->userId; ?>">
+                                        <?php if ($notify->type == 'request') { ?>
+                                            <a href="<?php echo $notify->userLink; ?>" target="_blank" class="item-notification">
 
-                                    <?php }else if($notify->type == 'message'){
+                                            <?php } else if ($notify->type == 'message') {
+                                        } else { ?>
+                                                <a href="post.php?username=<?php echo $notify->userLink; ?>&postid=<?php echo $notify->postid; ?>&profileid=<?php echo $notify->userId; ?>" target="_blank" class="item-notification">
+                                                <?php } ?>
+                                                <img src="<?php echo $notify->profilePic; ?>" style="height:40px; width:40px; border-radius:50%;" alt="">
+                                                <div class="notification-type-details">
+                                                    <span style="font-weight:600; font-size:14px; color:#CDDC39;margin-left:5px;">
+                                                        <?php echo '' . $notify->firstName . ' ' . $notify->lastName . ''; ?></span>
+                                                    <?php echo ($notify->type == 'comment') ? 'commented on your <span>post</span>' : (($notify->type == 'postReact') ? 'reacted on your <span>post</span>' : (($notify->type == 'request' && $notify->friendStatus == '1' && $notify->notificationFrom == $userid) ? 'accepted your friend request' : (($notify->type == 'request'  && $notify->notificationFor == $userid && $notify->notificationCount == '0') ? 'Sent you a friend request' : 'reacted on your <span>comment</span>'))); ?>
 
-                                }else{ ?>
-                                    <a href="post.php?username=<?php echo $notify->userLink; ?>&postid=<?php echo $notify->postid; ?>&profileid=<?php echo $notify->userId; ?>" target="_blank" class="item-notification">
-                                        <?php } ?>
-                                        <img src="<?php echo $notify->profilePic; ?>" style="height:40px; width:40px; border-radius:50%;" alt="">
-                                        <div class="notification-type-details">
-                                            <span style="font-weight:600; font-size:14px; color:#CDDC39;margin-left:5px;">
-                                                <?php echo ''.$notify->firstName.' '.$notify->lastName.''; ?></span>
-                                            <?php echo ($notify->type == 'comment') ? 'commented on your <span>post</span>' : (($notify->type == 'postReact')? 'reacted on your <span>post</span>' : (($notify->type=='request' && $notify->friendStatus == '1' && $notify->notificationFrom == $userid  ) ? 'accepted your friend request': (($notify->type=='request'  && $notify->notificationFor == $userid && $notify->notificationCount=='0'  )? 'Sent you a friend request': 'reacted on your <span>comment</span>'))); ?>
+                                                </div>
+                                                </a>
+                                    </li>
 
-                                        </div>
-                                    </a>
-                            </li>
-
-                            <?php  }  }  ?>
+                            <?php  }
+                            }  ?>
                         </ul>
                     </div>
 
@@ -138,27 +154,37 @@ if(isset($_GET['username']) == true && empty($_GET['username']) === false){
                 <a href="messenger.php" class="message-top-notification">
 
                     <div class="top-messenger top-css top-icon border-left " style="position:relative;">
-                        <?php if(empty(count($messageNotification))){echo '<div class="message-count"></div>'; }else{echo '<div class="message-count">'.count($messageNotification).'</div>'; } ?>
+                        <?php if (empty(count($messageNotification))) {
+                            echo '<div class="message-count"></div>';
+                        } else {
+                            echo '<div class="message-count">' . count($messageNotification) . '</div>';
+                        } ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="message-svg" style="height:20px; width:20px;" viewBox="0 0 12.64 13.64">
                             <defs>
                                 <style>
                                     .cls-1 {
                                         fill: #1a2947;
                                     }
-
                                 </style>
                             </defs>
                             <title>message</title>
                             <g id="Layer_2" data-name="Layer 2">
                                 <g id="Layer_1-2" data-name="Layer 1">
-                                    <path class="cls-1 <?php if(empty(count($messageNotification))){}else{echo 'msg-active-noti'; }?>" d="M6.32,0A6.32,6.32,0,0,0,1.94,10.87c.34.33-.32,2.51.09,2.75s1.79-1.48,2.21-1.33a6.22,6.22,0,0,0,2.08.35A6.32,6.32,0,0,0,6.32,0Zm.21,8.08L5.72,6.74l-2.43,1,2.4-3,.84,1.53,2.82-.71Z" />
+                                    <path class="cls-1 <?php if (empty(count($messageNotification))) {
+                                                        } else {
+                                                            echo 'msg-active-noti';
+                                                        } ?>" d="M6.32,0A6.32,6.32,0,0,0,1.94,10.87c.34.33-.32,2.51.09,2.75s1.79-1.48,2.21-1.33a6.22,6.22,0,0,0,2.08.35A6.32,6.32,0,0,0,6.32,0Zm.21,8.08L5.72,6.74l-2.43,1,2.4-3,.84,1.53,2.82-.71Z" />
                                 </g>
                             </g>
                         </svg>
                     </div>
                 </a>
                 <div class="top-notification top-css top-icon border-left " style="position: relative;">
-                    <?php if(empty(count($notificationCount))){echo '<div class="notification-count"></div>'; }else{echo '<div class="notification-count">'.count($notificationCount).'</div>'; } ?>
+                    <?php if (empty(count($notificationCount))) {
+                        echo '<div class="notification-count"></div>';
+                    } else {
+                        echo '<div class="notification-count">' . count($notificationCount) . '</div>';
+                    } ?>
 
                     <svg xmlns="http://www.w3.org/2000/svg" class="notification-svg" style="height:20px; width:20px;" viewBox="0 0 12.06 13.92">
                         <defs>
@@ -172,67 +198,77 @@ if(isset($_GET['username']) == true && empty($_GET['username']) === false){
                                     stroke: #1a2947;
                                     stroke-miterlimit: 10;
                                 }
-
                             </style>
                         </defs>
                         <title>notification</title>
                         <g id="Layer_2" data-name="Layer 2">
                             <g id="Layer_1-2" data-name="Layer 1">
-                                <path class="cls-1  <?php if(empty(count($notificationCount))){}else{echo 'active-noti'; }?>" d="M11.32,9A10.07,10.07,0,0,0,7.65,2.1,2.42,2.42,0,0,0,4.8,2,9.66,9.66,0,0,0,.74,9a2,2,0,0,0-.25,2.81H11.57A2,2,0,0,0,11.32,9Z" />
-                                <path class="cls-1 <?php if(empty(count($notificationCount))){}else{echo 'active-noti'; }?>" d="M8.07,12.32a1.86,1.86,0,0,1-2,1.6,1.86,1.86,0,0,1-2-1.6" />
-                                <ellipse class="cls-2 <?php if(empty(count($notificationCount))){}else{echo 'active-noti2'; }?>" cx="6.17" cy="1.82" rx="1.21" ry="1.32" />
+                                <path class="cls-1  <?php if (empty(count($notificationCount))) {
+                                                    } else {
+                                                        echo 'active-noti';
+                                                    } ?>" d="M11.32,9A10.07,10.07,0,0,0,7.65,2.1,2.42,2.42,0,0,0,4.8,2,9.66,9.66,0,0,0,.74,9a2,2,0,0,0-.25,2.81H11.57A2,2,0,0,0,11.32,9Z" />
+                                <path class="cls-1 <?php if (empty(count($notificationCount))) {
+                                                    } else {
+                                                        echo 'active-noti';
+                                                    } ?>" d="M8.07,12.32a1.86,1.86,0,0,1-2,1.6,1.86,1.86,0,0,1-2-1.6" />
+                                <ellipse class="cls-2 <?php if (empty(count($notificationCount))) {
+                                                        } else {
+                                                            echo 'active-noti2';
+                                                        } ?>" cx="6.17" cy="1.82" rx="1.21" ry="1.32" />
                             </g>
                         </g>
                     </svg>
                     <div class="notification-list-wrap">
                         <ul style="margin:0; padding:0;" class="notify-ul">
-                            <?php if(empty($notification)){}else{
-                                foreach($notification as $notify){
-                                    if($notify->type == 'request' || $notify->type == 'message'){}else if($notify->type == 'mention'){  ?>
-                            <li class="item-notification-wrap <?php echo ($notify->status == '0') ? 'unread-notification': 'read-notification' ?>" data-postid="<?php echo $notify->postid; ?>" data-notificationid="<?php echo $notify->ID; ?>" data-profileid="<?php echo $notify->userId; ?>">
-                                <?php if($notify->type == 'request'){ ?>
-                                <a href="<?php echo $notify->userLink; ?>" target="_blank" class="item-notification">
+                            <?php if (empty($notification)) {
+                            } else {
+                                foreach ($notification as $notify) {
+                                    if ($notify->type == 'request' || $notify->type == 'message') {
+                                    } else if ($notify->type == 'mention') {  ?>
+                                        <li class="item-notification-wrap <?php echo ($notify->status == '0') ? 'unread-notification' : 'read-notification' ?>" data-postid="<?php echo $notify->postid; ?>" data-notificationid="<?php echo $notify->ID; ?>" data-profileid="<?php echo $notify->userId; ?>">
+                                            <?php if ($notify->type == 'request') { ?>
+                                                <a href="<?php echo $notify->userLink; ?>" target="_blank" class="item-notification">
 
-                                    <?php }else if($notify->type == 'message'){
+                                                <?php } else if ($notify->type == 'message') {
+                                            } else { ?>
+                                                    <a href="post.php?username=<?php echo $notify->userLink; ?>&postid=<?php echo $notify->postid; ?>&profileid=<?php echo $notify->userId; ?>" target="_blank" class="item-notification">
+                                                    <?php } ?>
+                                                    <img src="<?php echo $notify->profilePic; ?>" style="height:40px; width:40px; border-radius:50%;" alt="">
+                                                    <div class="notification-type-details">
+                                                        <span style="font-weight:600; font-size:14px; color:#CDDC39;margin-left:5px;">
+                                                            <?php echo '' . $notify->firstName . ' ' . $notify->lastName . ''; ?></span>
 
-                                }else{ ?>
-                                    <a href="post.php?username=<?php echo $notify->userLink; ?>&postid=<?php echo $notify->postid; ?>&profileid=<?php echo $notify->userId; ?>" target="_blank" class="item-notification">
-                                        <?php } ?>
-                                        <img src="<?php echo $notify->profilePic; ?>" style="height:40px; width:40px; border-radius:50%;" alt="">
-                                        <div class="notification-type-details">
-                                            <span style="font-weight:600; font-size:14px; color:#CDDC39;margin-left:5px;">
-                                                <?php echo ''.$notify->firstName.' '.$notify->lastName.''; ?></span>
+                                                        <?php echo 'mentioned you in a <span>post</span>'; ?>
 
-                                            <?php echo 'mentioned you in a <span>post</span>'; ?>
-
-                                        </div>
-                                    </a>
-                            </li>
+                                                    </div>
+                                                    </a>
+                                        </li>
 
 
-                            <?php          }else{
-                                ?>
+                                    <?php          } else {
+                                    ?>
 
-                            <li class="item-notification-wrap <?php echo ($notify->status == '0') ? 'unread-notification': 'read-notification' ?>" data-postid="<?php echo $notify->postid; ?>" data-notificationid="<?php echo $notify->ID; ?>" data-profileid="<?php echo $notify->userId; ?>">
-                                <?php if($notify->type == 'request'){ ?>
-                                <a href="<?php echo $notify->userLink; ?>" target="_blank" class="item-notification">
+                                        <li class="item-notification-wrap <?php echo ($notify->status == '0') ? 'unread-notification' : 'read-notification' ?>" data-postid="<?php echo $notify->postid; ?>" data-notificationid="<?php echo $notify->ID; ?>" data-profileid="<?php echo $notify->userId; ?>">
+                                            <?php if ($notify->type == 'request') { ?>
+                                                <a href="<?php echo $notify->userLink; ?>" target="_blank" class="item-notification">
 
-                                    <?php }else if($notify->type == 'message'){
+                                                <?php } else if ($notify->type == 'message') {
+                                            } else { ?>
+                                                    <a href="post.php?username=<?php echo $notify->userLink; ?>&postid=<?php echo $notify->postid; ?>&profileid=<?php echo $notify->userId; ?>" target="_blank" class="item-notification">
+                                                    <?php } ?>
+                                                    <img src="<?php echo $notify->profilePic; ?>" style="height:40px; width:40px; border-radius:50%;" alt="">
+                                                    <div class="notification-type-details">
+                                                        <span style="font-weight:600; font-size:14px; color:#CDDC39;margin-left:5px;">
+                                                            <?php echo '' . $notify->firstName . ' ' . $notify->lastName . ''; ?></span>
+                                                        <?php echo ($notify->type == 'comment') ? 'commented on your <span>post</span>' : (($notify->type == 'postReact') ? 'reacted on your <span>post</span>' : (($notify->type == 'request' && $notify->friendStatus == '1' && $notify->notificationFrom == $userid) ? 'Friend request accepted' : (($notify->type == 'request'  && $notify->notificationFor == $userid && $notify->notificationCount == '0') ? 'Sent you a friend request' : 'reacted on your <span>comment</span>'))); ?>
 
-                                }else{ ?>
-                                    <a href="post.php?username=<?php echo $notify->userLink; ?>&postid=<?php echo $notify->postid; ?>&profileid=<?php echo $notify->userId; ?>" target="_blank" class="item-notification">
-                                        <?php } ?>
-                                        <img src="<?php echo $notify->profilePic; ?>" style="height:40px; width:40px; border-radius:50%;" alt="">
-                                        <div class="notification-type-details">
-                                            <span style="font-weight:600; font-size:14px; color:#CDDC39;margin-left:5px;">
-                                                <?php echo ''.$notify->firstName.' '.$notify->lastName.''; ?></span>
-                                            <?php echo ($notify->type == 'comment') ? 'commented on your <span>post</span>' : (($notify->type == 'postReact')? 'reacted on your <span>post</span>' : (($notify->type=='request' && $notify->friendStatus == '1' && $notify->notificationFrom == $userid  ) ? 'Friend request accepted': (($notify->type=='request'  && $notify->notificationFor == $userid && $notify->notificationCount=='0' )? 'Sent you a friend request': 'reacted on your <span>comment</span>'))); ?>
+                                                    </div>
+                                                    </a>
+                                        </li>
 
-                                        </div>
-                                    </a>
-                            </li>
-
-                            <?php } } }  ?>
+                            <?php }
+                                }
+                            }  ?>
                         </ul>
                     </div>
                 </div>
@@ -243,7 +279,6 @@ if(isset($_GET['username']) == true && empty($_GET['username']) === false){
                                 .cls-1 {
                                     fill: #1a2947;
                                 }
-
                             </style>
                         </defs>
                         <title>help</title>
@@ -262,7 +297,6 @@ if(isset($_GET['username']) == true && empty($_GET['username']) === false){
                                     .cls-1 {
                                         fill: #1a2947;
                                     }
-
                                 </style>
                             </defs>
                             <title>more</title>
@@ -293,239 +327,242 @@ if(isset($_GET['username']) == true && empty($_GET['username']) === false){
     <main>
         <div class="main-area">
             <?php
-                $blockUser = $loadFromPost->block($profileId, $userid);
+            $blockUser = $loadFromPost->block($profileId, $userid);
 
-                if(!empty($blockUser)){
+            if (!empty($blockUser)) {
 
-                    ?>
-            <div class="user-block-show-wrap" style="display: flex;justify-content: center;width: 100%;">
-                <div class="user-block-show" style="margin-top:50px; border:1px solid gray; border-radius:10px;background-color:white;padding:20px; ">
-                    <div class="block-icon-wrap" style="display:flex; ">
-                        <img src="assets/image/profile/block.JPG" alt="">
-                        <div style="font-size:18px; font-weight:600;"> Sorry, this content isn't available right now </div>
-                    </div>
-                    <hr>
-                    <div style="font-size:13px; font-weight:300;">The link you followed may have expired, or the page may only be visible to an audience you are not in.</div> <br>
-                    <div style="color:blue; display:flex; font-size:14px;">
-                        <a href="<?php echo $userData->userLink; ?>">Go back to your profile </a> <a href="index.php" style="margin-left:10px;"> Go to your home page</a>
+            ?>
+                <div class="user-block-show-wrap" style="display: flex;justify-content: center;width: 100%;">
+                    <div class="user-block-show" style="margin-top:50px; border:1px solid gray; border-radius:10px;background-color:white;padding:20px; ">
+                        <div class="block-icon-wrap" style="display:flex; ">
+                            <img src="assets/image/profile/block.JPG" alt="">
+                            <div style="font-size:18px; font-weight:600;"> Sorry, this content isn't available right now </div>
+                        </div>
+                        <hr>
+                        <div style="font-size:13px; font-weight:300;">The link you followed may have expired, or the page may only be visible to an audience you are not in.</div> <br>
+                        <div style="color:blue; display:flex; font-size:14px;">
+                            <a href="<?php echo $userData->userLink; ?>">Go back to your profile </a> <a href="index.php" style="margin-left:10px;"> Go to your home page</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
             <?php
-                }else{
+            } else {
 
-                ?>
+            ?>
 
-            <div class="profile-left-wrap">
-                <div class="profile-cover-wrap" style="background-image: url(<?php echo $profileData->coverPic; ?>)">
-                    <div class="upload-cov-opt-wrap">
-                        <?php if($profileId == $userid) { ?>
-                        <div class="add-cover-photo">
-                            <img src="assets/image/profile/uploadCoverPhoto.JPG" alt="">
-                            <div class="add-cover-text">Add a cover photo</div>
-                        </div>
-                        <?php  }else{ ?>
-                        <div class="dont-add-cover-photo">
+                <div class="profile-left-wrap">
+                    <div class="profile-cover-wrap" style="background-image: url(<?php echo $profileData->coverPic; ?>)">
+                        <div class="upload-cov-opt-wrap">
+                            <?php if ($profileId == $userid) { ?>
+                                <div class="add-cover-photo">
+                                    <img src="assets/image/profile/uploadCoverPhoto.JPG" alt="">
+                                    <div class="add-cover-text">Add a cover photo</div>
+                                </div>
+                            <?php  } else { ?>
+                                <div class="dont-add-cover-photo">
 
-                        </div>
-                        <?php  } ?>
-                        <div class="add-cov-opt">
-                            <div class="select-cover-photo">Select Photo</div>
-                            <div class="file-upload">
-                                <label for="cover-upload" class="file-upload-label">Upload Photo</label>
-                                <input type="file" name="file-upload" id="cover-upload" class="file-upload-input">
+                                </div>
+                            <?php  } ?>
+                            <div class="add-cov-opt">
+                                <div class="select-cover-photo">Select Photo</div>
+                                <div class="file-upload">
+                                    <label for="cover-upload" class="file-upload-label">Upload Photo</label>
+                                    <input type="file" name="file-upload" id="cover-upload" class="file-upload-input">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="cover-photo-rest-wrap">
-                        <div class="profile-pic-name">
-                            <div class="profile-pic">
-                                <?php if($profileId == $userid){
-    ?>
-                                <div class="profile-pic-upload">
-                                    <div class="add-pro">
-                                        <img src="assets//image/profile/uploadCoverPhoto.JPG" alt="">
-                                        <div>Update</div>
-                                    </div>
+                        <div class="cover-photo-rest-wrap">
+                            <div class="profile-pic-name">
+                                <div class="profile-pic">
+                                    <?php if ($profileId == $userid) {
+                                    ?>
+                                        <div class="profile-pic-upload">
+                                            <div class="add-pro">
+                                                <img src="assets//image/profile/uploadCoverPhoto.JPG" alt="">
+                                                <div>Update</div>
+                                            </div>
+                                        </div>
+                                    <?php
+
+                                    } ?>
+                                    <img src="<?php echo $profileData->profilePic; ?>" alt="" class="profile-pic-me">
                                 </div>
+                                <div class="profile-name">
+                                    <?php echo '' . $profileData->first_name . ' ' . $profileData->last_name . '' ?>
+                                </div>
+                            </div>
+                            <div class="profile-action">
+                                <?php
+                                if ($userid == $profileId) { ?>
+                                    <a href="about.php">
+                                        <div class="profile-edit-button" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
+                                            <img src="assets/image/profile//editProfile.JPG" alt="">
+                                            <div class="edit-profile-button-text" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">Edit Profile</div>
+                                        </div>
+                                    </a>
+
+                                    <?php
+                                } else {
+                                    if (empty($requestCheck)) {
+                                        if (empty($requestConf)) {  ?>
+
+                                            <div class="profile-add-friend" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
+                                                <img src="assets/image/friendRequestGray.JPG" alt="">
+                                                <div class="edit-profile-button-text">Add Friend</div>
+                                            </div>
+
+                                        <?php
+
+                                        } else if ($requestConf->reqStatus == '0') { ?>
+                                            <div class="profile-friend-confirm" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
+                                                <div class="edit-profile-confirm-button" style="position:relative;">
+                                                    <div class="con-req accept-req align-middle" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
+                                                        <img src="assets/image/friendRequestGray.JPG" alt="">Confirm Request
+                                                    </div>
+                                                    <div class="request-cancel" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">Cancel Request</div>
+                                                </div>
+                                            </div>
+
+
+                                        <?php
+                                        } else if ($requestConf->reqStatus == '1') { ?>
+                                            <div class="profile-friend-confirm" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
+                                                <div class="edit-profile-confirm-button" style="position:relative;">
+                                                    <div class="con-req align-middle">
+                                                        <img src="assets/image/rightsignGray.JPG" alt="">Friend
+                                                    </div>
+                                                    <div class="request-unfriend" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">Unfriend</div>
+                                                </div>
+                                            </div>
+
+                                        <?php
+
+                                        } else {
+                                        }
+                                    } else if ($requestCheck->reqStatus == '0') { ?>
+
+                                        <div class="profile-friend-sent" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
+                                            <img src="assets/image/friendRequestGray.JPG" alt="">
+                                            <div class="edit-profile-button-text">Friend Request Sent</div>
+                                        </div>
+                                    <?php
+                                    } else if ($requestCheck->reqStatus == '1') { ?>
+                                        <div class="profile-friend-confirm" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
+                                            <div class="edit-profile-confirm-button" style="position:relative;">
+                                                <div class="con-req align-middle">
+                                                    <img src="assets/image/rightsignGray.JPG" alt="">Friend
+                                                </div>
+                                                <div class="request-unfriend" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
+                                                    Unfriend
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    <?php
+                                    } else {
+                                        echo 'Not found';
+                                    }
+
+                                    if (empty($followCheck)) { ?>
+
+                                        <div class="profile-follow-button" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>" style="border-right:1px solid gray;">
+                                            <img src="assets/image/followGray.JPG" alt="">
+                                            <div class="profile-activity-button-text">Follow</div>
+                                        </div>
+
+
+                                    <?php
+                                    } else { ?>
+                                        <div class="profile-unfollow-button" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>" style="border-right:1px solid gray;">
+                                            <img src="assets/image/rightsignGray.JPG" alt="">
+                                            <div class="profile-activity-button-text">Unfollow</div>
+                                        </div>
+
+                                    <?php
+                                    }
+                                    ?>
+                                    <div class="block-wrap">
+                                        <div class="block-action">
+                                            <img src="assets/image/profile/dots.JPG" alt="">
+                                        </div>
+                                        <div class="block-show" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
+                                            block-user
+                                        </div>
+                                    </div>
+
                                 <?php
 
-} ?>
-                                <img src="<?php echo $profileData->profilePic; ?>" alt="" class="profile-pic-me">
-                            </div>
-                            <div class="profile-name">
-                                <?php echo ''.$profileData->first_name.' '.$profileData->last_name.'' ?>
+
+                                }
+                                ?>
+
+
+
                             </div>
                         </div>
-                        <div class="profile-action">
-                            <?php
-                                if($userid == $profileId){ ?>
-                            <a href="about.php">
-                                <div class="profile-edit-button" data-userid="<?php  echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
-                                    <img src="assets/image/profile//editProfile.JPG" alt="">
-                                    <div class="edit-profile-button-text" data-userid="<?php  echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">Edit Profile</div>
-                                </div>
-                            </a>
-
-                            <?php
-                                                    }else{
-                                if(empty($requestCheck)){
-                                    if(empty($requestConf)){  ?>
-
-                            <div class="profile-add-friend" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
-                                <img src="assets/image/friendRequestGray.JPG" alt="">
-                                <div class="edit-profile-button-text">Add Friend</div>
-                            </div>
-
-                            <?php
-
-                                            }else if($requestConf->reqStatus == '0'){ ?>
-                            <div class="profile-friend-confirm" data-userid="<?php  echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
-                                <div class="edit-profile-confirm-button" style="position:relative;">
-                                    <div class="con-req accept-req align-middle" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
-                                        <img src="assets/image/friendRequestGray.JPG" alt="">Confirm Request
-                                    </div>
-                                    <div class="request-cancel" data-userid="<?php  echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">Cancel Request</div>
-                                </div>
-                            </div>
 
 
-                            <?php
-                                            }else if($requestConf->reqStatus == '1'){ ?>
-                            <div class="profile-friend-confirm" data-userid="<?php  echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
-                                <div class="edit-profile-confirm-button" style="position:relative;">
-                                    <div class="con-req align-middle">
-                                        <img src="assets/image/rightsignGray.JPG" alt="">Friend
-                                    </div>
-                                    <div class="request-unfriend" data-userid="<?php  echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">Unfriend</div>
-                                </div>
-                            </div>
-
-                            <?php
-
-                                            }else{}
-                                                    }else if($requestCheck->reqStatus == '0'){ ?>
-
-                            <div class="profile-friend-sent" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
-                                <img src="assets/image/friendRequestGray.JPG" alt="">
-                                <div class="edit-profile-button-text">Friend Request Sent</div>
-                            </div>
-                            <?php
-                                                }else if($requestCheck->reqStatus == '1'){ ?>
-                            <div class="profile-friend-confirm" data-userid="<?php  echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
-                                <div class="edit-profile-confirm-button" style="position:relative;">
-                                    <div class="con-req align-middle">
-                                        <img src="assets/image/rightsignGray.JPG" alt="">Friend
-                                    </div>
-                                    <div class="request-unfriend" data-userid="<?php  echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
-                                        Unfriend
-                                    </div>
-                                </div>
-                            </div>
-
-                            <?php
-                                                        }else{echo 'Not found'; }
-
-                                                        if(empty($followCheck)){ ?>
-
-                            <div class="profile-follow-button" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>" style="border-right:1px solid gray;">
-                                <img src="assets/image/followGray.JPG" alt="">
-                                <div class="profile-activity-button-text">Follow</div>
-                            </div>
-
-
-                            <?php
-                                                            }else{ ?>
-                            <div class="profile-unfollow-button" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>" style="border-right:1px solid gray;">
-                                <img src="assets/image/rightsignGray.JPG" alt="">
-                                <div class="profile-activity-button-text">Unfollow</div>
-                            </div>
-
-                            <?php
-        }
-                                    ?>
-                            <div class="block-wrap">
-                                <div class="block-action">
-                                    <img src="assets/image/profile/dots.JPG" alt="">
-                                </div>
-                                <div class="block-show" data-userid="<?php echo $userid; ?>" data-profileid="<?php echo $profileId; ?>">
-                                    block-user
-                                </div>
-                            </div>
-
-                            <?php
-
-
-    }
-    ?>
-
-
-
-                        </div>
                     </div>
-
-
-                </div>
-                <?php
-                     include 'include/cover-button.php';
+                    <?php
+                    include 'include/cover-button.php';
                     ?>
-                <div class="bio-timeline">
+                    <div class="bio-timeline">
 
-                    <div class="bio-wrap">
-                        <div class="bio-intro">
-                            <div class="intro-wrap">
-                                <img src="assets/image/profile/intro.JPG" alt="">
-                                <div>Intro</div>
-                            </div>
-                            <div class="intro-icon-text">
-                                <img src="assets/image/profile/addBio.JPG" alt="">
-                                <div class="add-bio-text">Add a short bio to tell people more yourself.</div>
-                                <div class="add-bio-click"><a href="">Add Bio</a></div>
-                            </div>
-                            <div class="bio-details">
-                                <div class="bio-1">
-                                    <img src="assets/image/profile/livesIn.JPG" alt="">
-                                    <div class="live-text">Lives in <span class="live-text-css blue">Chittagong</span></div>
+                        <div class="bio-wrap">
+                            <div class="bio-intro">
+                                <div class="intro-wrap">
+                                    <img src="assets/image/profile/intro.JPG" alt="">
+                                    <div>Intro</div>
                                 </div>
-                                <div class="bio-2">
-                                    <img src="assets/image/profile/followedBy.JPG" alt="">
-                                    <div class="live-text">Followed by <span class="followed-text-css blue">65 people</span></div>
+                                <div class="intro-icon-text">
+                                    <img src="assets/image/profile/addBio.JPG" alt="">
+                                    <div class="add-bio-text">Add a short bio to tell people more yourself.</div>
+                                    <div class="add-bio-click"><a href="">Add Bio</a></div>
                                 </div>
-                            </div>
-                            <div class="bio-feature">
-                                <img src="assets/image/profile/feature.JPG" alt="">
-                                <div class="feat-text">
-                                    Showcase what's important to you by adding people, pages, groups and more to your featured section on your public profile.
+                                <div class="bio-details">
+                                    <div class="bio-1">
+                                        <img src="assets/image/profile/livesIn.JPG" alt="">
+                                        <div class="live-text">Lives in <span class="live-text-css blue">Chittagong</span></div>
+                                    </div>
+                                    <div class="bio-2">
+                                        <img src="assets/image/profile/followedBy.JPG" alt="">
+                                        <div class="live-text">Followed by <span class="followed-text-css blue">65 people</span></div>
+                                    </div>
                                 </div>
-                                <div class="add-feature blue">Add to Featured</div>
-                                <div class="add-feature-link blue">
-                                    <div class="link-plus">+</div>
-                                    <div>Add Instagram, Websites, Other Links</div>
+                                <div class="bio-feature">
+                                    <img src="assets/image/profile/feature.JPG" alt="">
+                                    <div class="feat-text">
+                                        Showcase what's important to you by adding people, pages, groups and more to your featured section on your public profile.
+                                    </div>
+                                    <div class="add-feature blue">Add to Featured</div>
+                                    <div class="add-feature-link blue">
+                                        <div class="link-plus">+</div>
+                                        <div>Add Instagram, Websites, Other Links</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="status-timeline-wrap">
-                        <?php if($profileId == $userid){ ?>
+                        <div class="status-timeline-wrap">
+                            <?php if ($profileId == $userid) { ?>
 
-                        <?php include 'include/status.php'; ?>
+                                <?php include 'include/status.php'; ?>
 
-                        <?php } ?>
-                        <div class="ptaf-wrap">
-                            <?php $loadFromPost->posts($userid, $profileId, 20); ?>
+                            <?php } ?>
+                            <div class="ptaf-wrap">
+                                <?php $loadFromPost->posts($userid, $profileId, 20); ?>
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
 
-            <div class="profile-right-wrap "></div>
+                <div class="profile-right-wrap "></div>
             <?php
-               }
+            }
 
-                    ?>
+            ?>
         </div>
         <div class="top-box-show"></div>
         <div id="adv_dem "></div>
@@ -2025,7 +2062,6 @@ if(isset($_GET['username']) == true && empty($_GET['username']) === false){
 
 
         })
-
     </script>
 
 
