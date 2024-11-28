@@ -23,7 +23,7 @@ function NotificationBox({ children }) {
       <PopoverTrigger>
         <div className="flex">
         {children}
-        <span className="p-1 px-2 -ml-3 rounded-full bg-primary text-[8px] text-white">{count}</span>
+        <span className="p-1 px-2 -ml-0 rounded-full bg-primary text-[8px] text-white">{count}</span>
         </div>
     </PopoverTrigger>
       <PopoverContent className="w-[500px]">

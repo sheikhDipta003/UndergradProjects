@@ -13,12 +13,14 @@ function WorkSpaceList() {
   const { user } = useUser();
   const { orgId } = useAuth();
   const [ workspaceList, setWorkspaceList ] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     user && getWorkspaceList();
   }, [orgId, user]);
 
   const getWorkspaceList = async () => {
+    setIsLoading(true);
     setWorkspaceList([]);
     const q = query(
       collection(db, "Workspace"),
@@ -29,9 +31,15 @@ function WorkSpaceList() {
       )
     );
     const querySnapshot = await getDocs(q);
+    const uniqueWorkspaceIds = new Set();
     querySnapshot.forEach((doc) => {
-      setWorkspaceList((prev) => [...prev, doc.data()]);
+      const workspaceData = doc.data();
+      if (!uniqueWorkspaceIds.has(workspaceData.id)) {
+        uniqueWorkspaceIds.add(workspaceData.id);
+        setWorkspaceList((prev) => [...prev, workspaceData]);
+      }
     });
+    setIsLoading(false);
   };
 
   return (
@@ -51,7 +59,13 @@ function WorkSpaceList() {
           <AlignLeft />
         </section>
       </section>
-      {workspaceList === undefined || workspaceList.length === 0 ? (
+      
+      {isLoading ? (
+      <section className="flex flex-col justify-center items-center mt-10">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+        <h2>Loading...</h2>
+      </section>
+    ) : workspaceList === undefined || workspaceList.length === 0 ? (
         <section className="flex flex-col justify-center items-center mt-10">
           <Image
             src={"/workspace.png"}
