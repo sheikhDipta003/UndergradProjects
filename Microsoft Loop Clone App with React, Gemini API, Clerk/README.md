@@ -76,7 +76,7 @@ npm run dev
 
 ## Demo
 
-Insert gif or link to demo
+https://github.com/user-attachments/assets/196255b7-4f28-4fd8-9078-5b1d21e5ba19
 
 
 ## Acknowledgements
