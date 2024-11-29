@@ -75,7 +75,7 @@ This project is an Airbnb clone built using the MERN stack (MongoDB, Express, Re
    - Open your browser and go to `http://localhost:5173`.
 
 ## Usage
-- **Register and login** to create an account.
+- **Register and login** to create an account. *Credentials for test user: john.doe@gmail.com, 123456*
 - **Manage your account** information from the profile page.
 - **Add new places** by providing details and uploading photos.
 - **Edit or delete** existing places.
