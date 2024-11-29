@@ -139,7 +139,7 @@ app.post("/places", (req, res) => {
 
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
     if (err) throw err;
-    console.log(userData);
+    // console.log(userData);
     const placeDoc = await Place.create({
       owner: userData.id,
       title,
