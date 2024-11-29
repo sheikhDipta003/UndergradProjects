@@ -82,6 +82,9 @@ This project is an Airbnb clone built using the MERN stack (MongoDB, Express, Re
 - **View all places** you have added.
 - **Book a place** and manage your bookings.
 
+## Demo
+[Demo](https://drive.google.com/file/d/1GnC-8Uji4DTOnlo6tcA48Gn7248l-l71/view?usp=drive_link)
+
 ## Folder Structure
 ```
 bookify/
