@@ -76,7 +76,7 @@ Clone of facebook with some of its core features like post, comment, react, shar
 
 ## Acknowledgements
 
- - [Build a Social Network in 20 Days from Scratch:PHP+MYSQL, Js](https://www.udemy.com/course/build-social-network-in-20-days/). The course completion certificate is [here](/path/to/cert).
+ - [Build a Social Network in 20 Days from Scratch:PHP+MYSQL, Js](https://www.udemy.com/course/build-social-network-in-20-days/). The course completion certificate is [here](https://github.com/sheikhDipta003/UndergradProjects/blob/443aa3a24ff0c67435b3c23e526e8fd3eebaf527/Social%20Network%20Project%20with%20php/Udemy_certificate_Social_Network_Build.pdf).
 
 
 
