@@ -95,7 +95,9 @@
 
                     <section class="bio-timeline">
                         <section class="bio-wrap">
-                            <?php require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\bio.php"; ?>
+                            <?php
+                            require "C:\\xampp\\htdocs\\facebook\\includes\\profile\\bio.php";
+                            ?>
                         </section>
 
                         <section class="status-timeline-wrap">

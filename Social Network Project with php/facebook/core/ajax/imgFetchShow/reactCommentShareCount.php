@@ -11,9 +11,9 @@
         </div>
         <div class="nf-3-react-username">
             <?php
-            if ($main_react_count->maxreact == '0') {
+            if ($main_react_count->_count == '0') {
             } else {
-                echo $main_react_count->maxreact;
+                echo $main_react_count->_count;
             }
             ?>
         </div>
