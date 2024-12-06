@@ -43,11 +43,11 @@ Clone of facebook with some of its core features like post, comment, react, shar
 
 - Start Apache Server and MySQL from the XAMPP Control Panel
 
-  ![Start apache mysql from xampp](path/to/image)
+  ![Start apache mysql from xampp](https://github.com/sheikhDipta003/UndergradProjects/blob/5a350f05e97dc75771af6314f6fe3f823908c25e/Social%20Network%20Project%20with%20php/doc_images/xampp_server_start.png)
 
-- Navigate to http://localhost/phpmyadmin to create the database tables and insert the values I used for testing the project. For creating the database tables, execute all the queries in [facebook.sql]() by copy-pasting the content of this file in the SQL tab as shown:
+- Navigate to http://localhost/phpmyadmin to create the database tables and insert the values I used for testing the project. For creating the database tables, execute all the queries in [facebook.sql](https://github.com/sheikhDipta003/UndergradProjects/blob/5a350f05e97dc75771af6314f6fe3f823908c25e/Social%20Network%20Project%20with%20php/facebook.sql) by copy-pasting the content of this file in the SQL tab as shown:
 
-  ![Create database](path/to/image)
+  ![Create database](https://github.com/sheikhDipta003/UndergradProjects/blob/5a350f05e97dc75771af6314f6fe3f823908c25e/Social%20Network%20Project%20with%20php/doc_images/click_on_sql_tab.png)
 
 - Navigate to http://localhost/facebook//sign.php to view the project. You may login as one of the following users or you may register as a new user:
   - email: stark@gmail.com, pass: 123456
@@ -57,7 +57,21 @@ Clone of facebook with some of its core features like post, comment, react, shar
 
 ## Demo
 
-watch the demo here
+- Part 1 : Profile Settings view and edit, Post, View timeline/About/Friends/Photos
+  
+  https://github.com/user-attachments/assets/94ae4f93-144b-4df6-b746-f13d72931b8b
+
+- Part 2 : Comment, Reply, React, Live Search, Share post, Add Friend, Unfriend/Unfollow/Block
+
+  https://github.com/user-attachments/assets/b82ce097-cf33-44dc-bb84-292b0798e63f
+
+- Part 3 : Notification system, Confirm/Reject Friend Request
+
+  https://github.com/user-attachments/assets/876664d6-e9fe-489a-a706-fb4095947f13
+
+- Part 4 : Messenger system
+
+  https://github.com/user-attachments/assets/4874ab62-1b09-4d27-809b-9e527056d914
 
 
 ## Acknowledgements
